@@ -2,6 +2,10 @@ package com.gkwak.lottonumbergenerator;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,7 +22,7 @@ public class HttpRequest {
     // Given a URL, establishes an HttpUrlConnection and retrieves
 // the web page content as a InputStream, which it returns as
 // a string.
-    public String downloadUrl(String myurl) throws IOException {
+    public JSONObject downloadUrl(String myurl) throws IOException {
         InputStream is = null;
         // Only display the first 500 characters of the retrieved
         // web page content.
@@ -33,13 +37,43 @@ public class HttpRequest {
             conn.setDoInput(true);
             // Starts the query
             conn.connect();
-            int response = conn.getResponseCode();
-            Log.d(DEBUG_TAG, "The response is: " + response);
-            is = conn.getInputStream();
 
-            // Convert the InputStream into a string
-            String contentAsString = readIt(is, len);
-            return contentAsString;
+
+            BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+
+            char[] buffer = new char[1024];
+
+            String jsonString = new String();
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line+"\n");
+            }
+            br.close();
+
+            jsonString = sb.toString();
+
+            System.out.println("JSON: " + jsonString);
+
+            JSONObject obj = null;
+            try {
+                obj = new JSONObject(jsonString);
+                System.out.println("JSON: " + obj.getString("returnValue"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return obj;
+
+//
+//            int response = conn.getResponseCode();
+//            Log.d(DEBUG_TAG, "The response is: " + response);
+//            is = conn.getInputStream();
+//
+//            // Convert the InputStream into a string
+//            String contentAsString = readIt(is, len);
+//            return contentAsString;
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
@@ -56,4 +90,6 @@ public class HttpRequest {
         reader.read(buffer);
         return new String(buffer);
     }
+
+
 }
