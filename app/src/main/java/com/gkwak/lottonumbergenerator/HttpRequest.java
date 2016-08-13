@@ -59,7 +59,6 @@ public class HttpRequest {
             JSONObject obj = null;
             try {
                 obj = new JSONObject(jsonString);
-                System.out.println("JSON: " + obj.getString("returnValue"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
