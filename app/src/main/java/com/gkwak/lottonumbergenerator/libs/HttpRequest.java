@@ -1,4 +1,4 @@
-package com.gkwak.lottonumbergenerator;
+package com.gkwak.lottonumbergenerator.libs;
 
 import android.util.Log;
 

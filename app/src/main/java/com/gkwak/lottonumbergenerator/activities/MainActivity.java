@@ -1,8 +1,7 @@
-package com.gkwak.lottonumbergenerator;
+package com.gkwak.lottonumbergenerator.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -20,10 +19,16 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.gkwak.lottonumbergenerator.R;
+import com.gkwak.lottonumbergenerator.data.Lotto;
+import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
+import com.gkwak.lottonumbergenerator.libs.HttpRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private GetLottoNumTask mAuthTask = null;
-    HttpRequest httpRequest = new HttpRequest();
+    private Serializable lotto;
+    private static String TAG = "MAIN_ACTIVITY";
+
 
     private static int[] winNumber = new int[6];
 
@@ -51,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber";
+        Intent intent = getIntent();
+        lotto = intent.getSerializableExtra("lotto");
 
-        mAuthTask = new GetLottoNumTask(url);
-        mAuthTask.execute();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -185,53 +190,6 @@ public class MainActivity extends AppCompatActivity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class GetLottoNumTask extends AsyncTask<Void, Void, Boolean> {
 
-        private String getUrl = "";
-        GetLottoNumTask(String url) {
-            getUrl = url;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-
-            JSONObject result = null;
-            try {
-                result = httpRequest.downloadUrl(getUrl);
-                winNumber[0] = result.getInt("drwtNo1");
-                winNumber[1] = result.getInt("drwtNo2");
-                winNumber[2] = result.getInt("drwtNo3");
-                winNumber[3] = result.getInt("drwtNo4");
-                winNumber[4] = result.getInt("drwtNo5");
-                winNumber[5] = result.getInt("drwtNo6");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            System.out.println("onPostExecute");
-            mAuthTask = null;
-
-            if (success) {
-                Log.i("finish ", "");
-            } else {
-                Log.i("error ", "");
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
-    }
 
 }
