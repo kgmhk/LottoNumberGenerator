@@ -2,6 +2,7 @@ package com.gkwak.lottonumbergenerator.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class SplashActivity extends Activity {
     private static String TAG = "SPLASH_ACTIVITY";
     private GetLottoNumTask mAuthTask = null;
     private Lotto lotto;
+    private SharedPreferences sharedPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,16 @@ public class SplashActivity extends Activity {
         lotto = new Lotto(result);
         int[] a = lotto.getWinNumber();
         Log.i(TAG, a[0] + "");
+        String joiWinNumber = new String();
 
+        for(int i = 0; i < a.length; i++) {
+            joiWinNumber += a[i] + ",";
+        }
+
+        sharedPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("winNumber", joiWinNumber);
+        editor.commit();
         Log.i(TAG, "Start Splash Activity");
 
         Handler hd = new Handler();
@@ -50,7 +61,7 @@ public class SplashActivity extends Activity {
     private class splashhandler implements Runnable{
         public void run() {
             Intent intent = new Intent(getApplication(), MainActivity.class);
-            intent.putExtra("Lotto", (Serializable) lotto);
+//            intent.putExtra("Lotto", (Serializable) lotto);
             startActivity(intent); // 로딩이 끝난후 이동할 Activity
             SplashActivity.this.finish(); // 로딩페이지 Activity Stack에서 제거
         }

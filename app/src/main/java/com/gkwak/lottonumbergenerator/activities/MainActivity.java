@@ -1,6 +1,8 @@
 package com.gkwak.lottonumbergenerator.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,12 +19,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gkwak.lottonumbergenerator.R;
 import com.gkwak.lottonumbergenerator.data.Lotto;
 import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
 import com.gkwak.lottonumbergenerator.libs.HttpRequest;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,39 +46,60 @@ public class MainActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private Serializable lotto;
     private static String TAG = "MAIN_ACTIVITY";
-
-
-    private static int[] winNumber = new int[6];
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    String[] winNumbers;
+    TextView num1, num2, num3, num4, num5, num6;
+    Button qr_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        lotto = intent.getSerializableExtra("lotto");
+        SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+        String joinedWinNumbers = mPref.getString("winNumber", "no exist");
 
+        winNumbers = joinedWinNumbers.split(",");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        num1 = (TextView) findViewById(R.id.num1);
+        num2 = (TextView) findViewById(R.id.num2);
+        num3 = (TextView) findViewById(R.id.num3);
+        num4 = (TextView) findViewById(R.id.num4);
+        num5 = (TextView) findViewById(R.id.num5);
+        num6 = (TextView) findViewById(R.id.num6);
+        qr_btn = (Button) findViewById(R.id.qr_btn);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        num1.setText(winNumbers[0]);
+        num2.setText(winNumbers[1]);
+        num3.setText(winNumbers[2]);
+        num4.setText(winNumbers[3]);
+        num5.setText(winNumbers[4]);
+        num6.setText(winNumbers[5]);
 
+        qr_btn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v){
+                Log.i(TAG, "onClick Button");
+                IntentIntegrator.initiateScan(MainActivity.this);
+            }
+        });
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Log.d("MainActivity", "Cancelled scan");
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d("MainActivity", "Scanned");
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Log.d("MainActivity", "Weird");
+// This is important, otherwise the result will not be passed to the fragment
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 
@@ -97,99 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-
-
-            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
-                System.out.println("aaaaa" +getArguments().getInt(ARG_SECTION_NUMBER));
-                String winNumbers = new String();
-
-                for (int i=0; i<winNumber.length; i++) {
-                    winNumbers += winNumber[i];
-                }
-
-                textView.setText(winNumbers);
-            } else {
-                textView.setText("it is other page");
-            }
-
-
-            return rootView;
-        }
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
 
 
 }

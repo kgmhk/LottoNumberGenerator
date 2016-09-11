@@ -29,6 +29,7 @@ public class HttpRequest {
         int len = 500;
 
         try {
+            Log.i(DEBUG_TAG, myurl);
             URL url = new URL(myurl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000 /* milliseconds */);

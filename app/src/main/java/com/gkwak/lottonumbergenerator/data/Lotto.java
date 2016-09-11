@@ -44,4 +44,56 @@ public class Lotto {
         int[] winNumbers = new int[]{this.drwtNo1, this.drwtNo2, this.drwtNo3, this.drwtNo4, this.drwtNo5, this.drwtNo6};
         return winNumbers;
     }
+
+    public int getBnusNo() {
+        return bnusNo;
+    }
+
+    public int getFirstWinamnt() {
+        return firstWinamnt;
+    }
+
+    public int getTotSellamnt() {
+        return totSellamnt;
+    }
+
+    public Boolean getReturnValue() {
+        return returnValue;
+    }
+
+    public int getDrwtNo1() {
+        return drwtNo1;
+    }
+
+    public int getDrwtNo2() {
+        return drwtNo2;
+    }
+
+    public int getDrwtNo3() {
+        return drwtNo3;
+    }
+
+    public int getDrwtNo4() {
+        return drwtNo4;
+    }
+
+    public int getDrwtNo5() {
+        return drwtNo5;
+    }
+
+    public int getDrwtNo6() {
+        return drwtNo6;
+    }
+
+    public int getDrwNo() {
+        return drwNo;
+    }
+
+    public int getFirstPrzwnerCo() {
+        return firstPrzwnerCo;
+    }
+
+    public String getDrwNoDate() {
+        return drwNoDate;
+    }
 }
