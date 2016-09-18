@@ -1,6 +1,15 @@
 <resources>
-    <string name="app_name">GetLotteNum</string>
+    <string name="app_name">GetLottoNum</string>
     <string name="splash_name">Splash Screen</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="qr_btn">당첨 확인</string>
+    <string name="today_num_btn">오늘의 번호</string>
+    <string name="banner_ad_unit_id">ca-app-pub-2778546304304506/4498970075</string>
+    <string name="check_lotto_number">당첨 번호 확인</string>
+    <string name="today_lotto_number">오늘의 추천 번호</string>
+    <string name="not_yet_draw">아직 추첨되지 않은 로또 입니다.</string>
+    <string name="getting_lotto_number">로또 번호를 취합 중 입니다.</string>
+    <string name="charge_btn">무료 충전</string>
+    <string name="test_btn">TEST</string>
 </resources>

@@ -31,12 +31,6 @@ public class GetLottoNumTask extends AsyncTask<Void, Void, JSONObject> {
         JSONObject result = null;
         try {
             result = httpRequest.downloadUrl(getUrl);
-//            winNumber[0] = result.getInt("drwtNo1");
-//            winNumber[1] = result.getInt("drwtNo2");
-//            winNumber[2] = result.getInt("drwtNo3");
-//            winNumber[3] = result.getInt("drwtNo4");
-//            winNumber[4] = result.getInt("drwtNo5");
-//            winNumber[5] = result.getInt("drwtNo6");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,12 +40,6 @@ public class GetLottoNumTask extends AsyncTask<Void, Void, JSONObject> {
     @Override
     protected void onPostExecute(final JSONObject success) {
         System.out.println("onPostExecute");
-//
-//        if (success.success) {
-//            Log.i("finish ", "");
-//        } else {
-//            Log.i("error ", "");
-//        }
     }
 
     @Override

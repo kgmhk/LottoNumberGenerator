@@ -18,6 +18,8 @@ public class Lotto {
     private int drwNo;
     private int firstPrzwnerCo;
     private String drwNoDate;
+    private int[] winNumbers;
+    private String winNumberStr;
 
 
     public Lotto(JSONObject lotto) {
@@ -40,9 +42,18 @@ public class Lotto {
         }
     }
 
-    public int[] getWinNumber() {
-        int[] winNumbers = new int[]{this.drwtNo1, this.drwtNo2, this.drwtNo3, this.drwtNo4, this.drwtNo5, this.drwtNo6};
+    public int[] getWinNumbers() {
+        winNumbers = new int[]{this.drwtNo1, this.drwtNo2, this.drwtNo3, this.drwtNo4, this.drwtNo5, this.drwtNo6, this.bnusNo};
         return winNumbers;
+    }
+
+    public String getWinNumberStr() {
+        winNumbers = new int[]{this.drwtNo1, this.drwtNo2, this.drwtNo3, this.drwtNo4, this.drwtNo5, this.drwtNo6, this.bnusNo};
+        for(int i = 0; i < winNumbers.length; i++) {
+            if (i == 0) winNumberStr = winNumbers[i] + ",";
+            else winNumberStr += winNumbers[i] + ",";
+        }
+        return winNumberStr;
     }
 
     public int getBnusNo() {

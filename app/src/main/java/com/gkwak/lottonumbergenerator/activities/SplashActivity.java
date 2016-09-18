@@ -14,6 +14,8 @@ import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class SplashActivity extends Activity {
@@ -40,17 +42,28 @@ public class SplashActivity extends Activity {
         }
 
         lotto = new Lotto(result);
-        int[] a = lotto.getWinNumber();
-        Log.i(TAG, a[0] + "");
-        String joiWinNumber = new String();
+        String winNumberStr = lotto.getWinNumberStr();
+        Log.i(TAG, winNumberStr);
 
-        for(int i = 0; i < a.length; i++) {
-            joiWinNumber += a[i] + ",";
-        }
+//        SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+//        int drwNo = mPref.getInt("drwNo", 1);
 
         sharedPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("winNumber", joiWinNumber);
+
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        String checkDate = sharedPref.getString("checkDate", "");
+
+        if (checkDate.equals("") || !checkDate.equals(sdf.format(d).toString())) {
+            Log.i(TAG, "first in");
+            editor.putString("checkDate", sdf.format(d).toString());
+            editor.putInt("checkLottoNumberCount", 5);
+        }
+
+        editor.putString("winNumber", winNumberStr);
+        editor.putInt("drwNo", lotto.getDrwNo());
         editor.commit();
         Log.i(TAG, "Start Splash Activity");
 

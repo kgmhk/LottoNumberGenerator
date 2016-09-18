@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -9,7 +10,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center">
 
         <TextView
             android:layout_width="match_parent"
@@ -17,7 +19,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num1"
             android:id="@+id/num1"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
@@ -25,7 +28,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num2"
             android:id="@+id/num2"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
@@ -33,7 +37,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num3"
             android:id="@+id/num3"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
@@ -41,7 +46,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num4"
             android:id="@+id/num4"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
@@ -49,7 +55,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num5"
             android:id="@+id/num5"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
@@ -57,13 +64,78 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="num6"
             android:id="@+id/num6"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="+"
+            android:id="@+id/plus"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="bouns_num"
+            android:id="@+id/bonus_num"
+            android:layout_weight="1"
+            android:gravity="center" />
     </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="QR 버튼"
+        android:text="@string/qr_btn"
         android:id="@+id/qr_btn"
         android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/today_num_btn"
+            android:id="@+id/today_num_btn"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/charge_btn"
+                android:id="@+id/charge_offerwall_btn"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_btn"
+                android:id="@+id/charge_video_btn"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>
