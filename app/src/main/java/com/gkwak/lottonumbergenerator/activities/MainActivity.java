@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 애드팝콘 오퍼월 연동
         IgawCommon.startApplication(MainActivity.this);
-        String android_id = Settings.Secure.ANDROID_ID;
+        String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         IgawCommon.setUserId("user" + android_id);
 
         // Add AdMob
