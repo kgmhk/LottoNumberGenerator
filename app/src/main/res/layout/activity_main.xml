@@ -11,79 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        android:id="@+id/win_number_linear">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num1"
-            android:id="@+id/num1"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num2"
-            android:id="@+id/num2"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num3"
-            android:id="@+id/num3"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num4"
-            android:id="@+id/num4"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num5"
-            android:id="@+id/num5"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="num6"
-            android:id="@+id/num6"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="+"
-            android:id="@+id/plus"
-            android:layout_weight="1"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="bouns_num"
-            android:id="@+id/bonus_num"
-            android:layout_weight="1"
-            android:gravity="center" />
     </LinearLayout>
 
     <Button

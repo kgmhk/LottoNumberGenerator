@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -30,6 +31,8 @@ import android.view.ViewGroup;
 
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ import android.widget.Toast;
 import com.gkwak.lottonumbergenerator.R;
 import com.gkwak.lottonumbergenerator.data.Lotto;
 import com.gkwak.lottonumbergenerator.data.QrLotto;
+import com.gkwak.lottonumbergenerator.libs.ConvertNumberToResource;
 import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
 import com.gkwak.lottonumbergenerator.libs.HttpRequest;
 import com.gkwak.lottonumbergenerator.libs.QrCodeNumberParser;
@@ -64,6 +68,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import static android.R.attr.breadCrumbShortTitle;
+import static android.R.attr.gravity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private GetLottoNumTask mAuthTask = null;
     private Lotto lotto;
+    private ConvertNumberToResource convertNumberToResource;
     final UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     @Override
@@ -131,27 +139,35 @@ public class MainActivity extends AppCompatActivity {
         String joinedWinNumbers = mPref.getString("winNumber", "no exist");
         int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
 
+        LinearLayout winNumberLinear = (LinearLayout) findViewById(R.id.win_number_linear);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+
+        convertNumberToResource = new ConvertNumberToResource();
         winNumbers = joinedWinNumbers.split(",");
 
-        num1 = (TextView) findViewById(R.id.num1);
-        num2 = (TextView) findViewById(R.id.num2);
-        num3 = (TextView) findViewById(R.id.num3);
-        num4 = (TextView) findViewById(R.id.num4);
-        num5 = (TextView) findViewById(R.id.num5);
-        num6 = (TextView) findViewById(R.id.num6);
-        bonus_num = (TextView) findViewById(R.id.bonus_num);
+        for (int i=0; i<8; i++) {
+            ImageView iv = new ImageView(this);
+            iv.setLayoutParams(layoutParams);
+
+            TextView tv = new TextView(this);
+            tv.setLayoutParams(layoutParams);
+            tv.setGravity(Gravity.CENTER);
+            if (i == 6) {
+                tv.setText("+");
+                winNumberLinear.addView(tv);
+            } else if (i == 7) {
+                iv = convertNumberToResource.convertNumberToResource(Integer.parseInt(winNumbers[6]), iv);
+                winNumberLinear.addView(iv);
+            } else {
+                iv = convertNumberToResource.convertNumberToResource(Integer.parseInt(winNumbers[i]), iv);
+                winNumberLinear.addView(iv);
+            }
+        }
+
         qr_btn = (Button) findViewById(R.id.qr_btn);
         today_num_btn = (Button) findViewById(R.id.today_num_btn);
         charge_offerwall_btn = (Button) findViewById(R.id.charge_offerwall_btn);
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
-
-        num1.setText(winNumbers[0]);
-        num2.setText(winNumbers[1]);
-        num3.setText(winNumbers[2]);
-        num4.setText(winNumbers[3]);
-        num5.setText(winNumbers[4]);
-        num6.setText(winNumbers[5]);
-        bonus_num.setText(winNumbers[6]);
 
         today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + checkLottoNumberCount);
         // 버튼 비활성화
@@ -571,78 +587,28 @@ public class MainActivity extends AppCompatActivity {
             View layout = inflater.inflate(R.layout.today_num_popup,
                     (ViewGroup) findViewById(R.id.today_lotto_num_element));
 
+            LinearLayout top = (LinearLayout) layout.findViewById(R.id.today_num_lotto_top);
+
             pwindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-500, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             today_num_popup_close_btn = (Button) layout.findViewById(R.id.today_num_popup_close_btn);
-            todayNum1_0 = (TextView) layout.findViewById(R.id.todayNum1_0);
-            todayNum1_1 = (TextView) layout.findViewById(R.id.todayNum1_1);
-            todayNum1_2 = (TextView) layout.findViewById(R.id.todayNum1_2);
-            todayNum1_3 = (TextView) layout.findViewById(R.id.todayNum1_3);
-            todayNum1_4 = (TextView) layout.findViewById(R.id.todayNum1_4);
-            todayNum1_5 = (TextView) layout.findViewById(R.id.todayNum1_5);
 
-            todayNum2_0 = (TextView) layout.findViewById(R.id.todayNum2_0);
-            todayNum2_1 = (TextView) layout.findViewById(R.id.todayNum2_1);
-            todayNum2_2 = (TextView) layout.findViewById(R.id.todayNum2_2);
-            todayNum2_3 = (TextView) layout.findViewById(R.id.todayNum2_3);
-            todayNum2_4 = (TextView) layout.findViewById(R.id.todayNum2_4);
-            todayNum2_5 = (TextView) layout.findViewById(R.id.todayNum2_5);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
 
-            todayNum3_0 = (TextView) layout.findViewById(R.id.todayNum3_0);
-            todayNum3_1 = (TextView) layout.findViewById(R.id.todayNum3_1);
-            todayNum3_2 = (TextView) layout.findViewById(R.id.todayNum3_2);
-            todayNum3_3 = (TextView) layout.findViewById(R.id.todayNum3_3);
-            todayNum3_4 = (TextView) layout.findViewById(R.id.todayNum3_4);
-            todayNum3_5 = (TextView) layout.findViewById(R.id.todayNum3_5);
-
-            todayNum4_0 = (TextView) layout.findViewById(R.id.todayNum4_0);
-            todayNum4_1 = (TextView) layout.findViewById(R.id.todayNum4_1);
-            todayNum4_2 = (TextView) layout.findViewById(R.id.todayNum4_2);
-            todayNum4_3 = (TextView) layout.findViewById(R.id.todayNum4_3);
-            todayNum4_4 = (TextView) layout.findViewById(R.id.todayNum4_4);
-            todayNum4_5 = (TextView) layout.findViewById(R.id.todayNum4_5);
-
-            todayNum5_0 = (TextView) layout.findViewById(R.id.todayNum5_0);
-            todayNum5_1 = (TextView) layout.findViewById(R.id.todayNum5_1);
-            todayNum5_2 = (TextView) layout.findViewById(R.id.todayNum5_2);
-            todayNum5_3 = (TextView) layout.findViewById(R.id.todayNum5_3);
-            todayNum5_4 = (TextView) layout.findViewById(R.id.todayNum5_4);
-            todayNum5_5 = (TextView) layout.findViewById(R.id.todayNum5_5);
-
-            todayNum1_0.setText("FIRST");
-            todayNum1_1.setText(todayNumbers[0][0] + "");
-            todayNum1_2.setText(todayNumbers[0][1] + "");
-            todayNum1_3.setText(todayNumbers[0][2] + "");
-            todayNum1_4.setText(todayNumbers[0][3] + "");
-            todayNum1_5.setText(todayNumbers[0][4] + "");
-
-            todayNum2_0.setText("SECOND");
-            todayNum2_1.setText(todayNumbers[1][0] + "");
-            todayNum2_2.setText(todayNumbers[1][1] + "");
-            todayNum2_3.setText(todayNumbers[1][2] + "");
-            todayNum2_4.setText(todayNumbers[1][3] + "");
-            todayNum2_5.setText(todayNumbers[1][4] + "");
-
-            todayNum3_0.setText("THIRD");
-            todayNum3_1.setText(todayNumbers[2][0] + "");
-            todayNum3_2.setText(todayNumbers[2][1] + "");
-            todayNum3_3.setText(todayNumbers[2][2] + "");
-            todayNum3_4.setText(todayNumbers[2][3] + "");
-            todayNum3_5.setText(todayNumbers[2][4] + "");
-
-            todayNum4_0.setText("FOURTH");
-            todayNum4_1.setText(todayNumbers[3][0] + "");
-            todayNum4_2.setText(todayNumbers[3][1] + "");
-            todayNum4_3.setText(todayNumbers[3][2] + "");
-            todayNum4_4.setText(todayNumbers[3][3] + "");
-            todayNum4_5.setText(todayNumbers[3][4] + "");
-
-            todayNum5_0.setText("THIRTH");
-            todayNum5_1.setText(todayNumbers[4][0] + "");
-            todayNum5_2.setText(todayNumbers[4][1] + "");
-            todayNum5_3.setText(todayNumbers[4][2] + "");
-            todayNum5_4.setText(todayNumbers[4][3] + "");
-            todayNum5_5.setText(todayNumbers[4][4] + "");
+            for (int j=0; j<5; j++) {
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setLayoutParams(layoutParams);
+                linearLayout.setGravity(Gravity.CENTER);
+                for (int i=0; i<6; i++) {
+                    TextView tv = new TextView(this);
+                    tv.setText(todayNumbers[j][i]+ "");
+                    tv.setLayoutParams(textParams);
+                    tv.setGravity(Gravity.CENTER);
+                    linearLayout.addView(tv);
+                }
+                top.addView(linearLayout);
+            }
 
             today_num_popup_close_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

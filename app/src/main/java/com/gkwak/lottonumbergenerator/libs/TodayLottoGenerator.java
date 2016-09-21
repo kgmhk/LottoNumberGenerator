@@ -25,7 +25,7 @@ public class TodayLottoGenerator {
     }
 
     public int[][] todayLottoNumbers() {
-        int[][] resultNumbers = new int[5][5];
+        int[][] resultNumbers = new int[5][6];
         int[][] todayNumbers= new int[10][6];
 
         int[] randomDrwNo = this.randomDrwNo();
@@ -41,9 +41,9 @@ public class TodayLottoGenerator {
 
         Random rand = new Random();
         for (int i=0; i<5; i++) {
-            for (int j=0; j<5; j++) {
+            for (int j=0; j<6; j++) {
                 int n = rand.nextInt(10);
-                int r = rand.nextInt(5);
+                int r = rand.nextInt(6);
                 boolean validateNumber = this.validateNumber(resultNumbers[i], todayNumbers[n][r]);
                 Log.i(TAG, "valiedeate : "+ validateNumber);
                 if (validateNumber) {
