@@ -53,6 +53,8 @@ import com.igaworks.IgawCommon;
 import com.igaworks.adpopcorn.IgawAdpopcorn;
 import com.igaworks.interfaces.IgawRewardItem;
 import com.igaworks.interfaces.IgawRewardItemEventListener;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
 import com.unity3d.ads.log.DeviceLog;
@@ -70,37 +72,18 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.R.attr.breadCrumbShortTitle;
+import static android.R.attr.fingerprintAuthDrawable;
 import static android.R.attr.gravity;
 
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private static String TAG = "MAIN_ACTIVITY";
     private static String UNITY_ADS_GAME_ID = "1144759";
     String[] winNumbers;
-    TextView num1, num2, num3, num4, num5, num6, bonus_num;
-    TextView todayNum1_0, todayNum1_1, todayNum1_2, todayNum1_3, todayNum1_4, todayNum1_5, todayNum2_0,
-            todayNum2_1, todayNum2_2, todayNum2_3, todayNum2_4, todayNum2_5, todayNum3_0, todayNum3_1,
-            todayNum3_2, todayNum3_3, todayNum3_4, todayNum3_5, todayNum4_0, todayNum4_1, todayNum4_2,
-            todayNum4_3, todayNum4_4, todayNum4_5, todayNum5_0, todayNum5_1, todayNum5_2, todayNum5_3,
-            todayNum5_4, todayNum5_5;
-    TextView checkNum1_0, checkNum1_1, checkNum1_2, checkNum1_3, checkNum1_4, checkNum1_5, checkNum2_0,
-            checkNum2_1, checkNum2_2, checkNum2_3, checkNum2_4, checkNum2_5, checkNum3_0, checkNum3_1,
-            checkNum3_2, checkNum3_3, checkNum3_4, checkNum3_5, checkNum4_0, checkNum4_1, checkNum4_2,
-            checkNum4_3, checkNum4_4, checkNum4_5, checkNum5_0, checkNum5_1, checkNum5_2, checkNum5_3,
-            checkNum5_4, checkNum5_5;
     TextView check_lotto_num_title;
     Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn, charge_offerwall_btn,
     charge_video_btn;
 
-    private PopupWindow pwindo;
+    private PopupWindow pwindo, cehckNumPopupWindo;
     private int mWidthPixels, mHeightPixels;
     private String interstitialPlacementId;
     private String incentivizedPlacementId;
@@ -118,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // font 적용
+        Typekit.getInstance()
+                .addNormal(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
 
         // 유니티 애드 연동
         UnityAds.initialize(MainActivity.this, UNITY_ADS_GAME_ID, unityAdsListener);
@@ -137,21 +124,26 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
         String joinedWinNumbers = mPref.getString("winNumber", "no exist");
+        int drwNo = mPref.getInt("drwNo", 1);
         int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
 
         LinearLayout winNumberLinear = (LinearLayout) findViewById(R.id.win_number_linear);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-
+        TextView winNumberDrw = (TextView) findViewById(R.id.win_number_drw);
         convertNumberToResource = new ConvertNumberToResource();
         winNumbers = joinedWinNumbers.split(",");
 
+        winNumberDrw.setText(drwNo + " 회 당첨번호");
+        winNumberDrw.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         for (int i=0; i<8; i++) {
+            layoutParams.setMargins(6, 20, 6, 16);
             ImageView iv = new ImageView(this);
             iv.setLayoutParams(layoutParams);
+            iv.setScaleType(ImageView.ScaleType.FIT_START);
 
             TextView tv = new TextView(this);
             tv.setLayoutParams(layoutParams);
-            tv.setGravity(Gravity.CENTER);
+            tv.setGravity(Gravity.CENTER | Gravity.TOP);
             if (i == 6) {
                 tv.setText("+");
                 winNumberLinear.addView(tv);
@@ -170,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
 
         today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + checkLottoNumberCount);
+        today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
         if (checkLottoNumberCount == 0) {
             today_num_btn.setEnabled(false);
@@ -339,6 +332,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         IgawCommon.startSession(MainActivity.this);
@@ -381,45 +379,13 @@ public class MainActivity extends AppCompatActivity {
             View layout = inflater.inflate(R.layout.check_num_popup,
                     (ViewGroup) findViewById(R.id.check_lotto_num_element));
 
-            pwindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-500, true);
-            pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+            LinearLayout checkNumberLinear = (LinearLayout) layout.findViewById(R.id.check_lotto_num_linear);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+
+            cehckNumPopupWindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-500, true);
+            cehckNumPopupWindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             check_num_popup_close_btn = (Button) layout.findViewById(R.id.check_num_popup_close_btn);
             check_lotto_num_title = (TextView) layout.findViewById(R.id.check_lotto_num_title);
-            checkNum1_0 = (TextView) layout.findViewById(R.id.checkNum1_0);
-            checkNum1_1 = (TextView) layout.findViewById(R.id.checkNum1_1);
-            checkNum1_2 = (TextView) layout.findViewById(R.id.checkNum1_2);
-            checkNum1_3 = (TextView) layout.findViewById(R.id.checkNum1_3);
-            checkNum1_4 = (TextView) layout.findViewById(R.id.checkNum1_4);
-            checkNum1_5 = (TextView) layout.findViewById(R.id.checkNum1_5);
-
-            checkNum2_0 = (TextView) layout.findViewById(R.id.checkNum2_0);
-            checkNum2_1 = (TextView) layout.findViewById(R.id.checkNum2_1);
-            checkNum2_2 = (TextView) layout.findViewById(R.id.checkNum2_2);
-            checkNum2_3 = (TextView) layout.findViewById(R.id.checkNum2_3);
-            checkNum2_4 = (TextView) layout.findViewById(R.id.checkNum2_4);
-            checkNum2_5 = (TextView) layout.findViewById(R.id.checkNum2_5);
-
-            checkNum3_0 = (TextView) layout.findViewById(R.id.checkNum3_0);
-            checkNum3_1 = (TextView) layout.findViewById(R.id.checkNum3_1);
-            checkNum3_2 = (TextView) layout.findViewById(R.id.checkNum3_2);
-            checkNum3_3 = (TextView) layout.findViewById(R.id.checkNum3_3);
-            checkNum3_4 = (TextView) layout.findViewById(R.id.checkNum3_4);
-            checkNum3_5 = (TextView) layout.findViewById(R.id.checkNum3_5);
-
-            checkNum4_0 = (TextView) layout.findViewById(R.id.checkNum4_0);
-            checkNum4_1 = (TextView) layout.findViewById(R.id.checkNum4_1);
-            checkNum4_2 = (TextView) layout.findViewById(R.id.checkNum4_2);
-            checkNum4_3 = (TextView) layout.findViewById(R.id.checkNum4_3);
-            checkNum4_4 = (TextView) layout.findViewById(R.id.checkNum4_4);
-            checkNum4_5 = (TextView) layout.findViewById(R.id.checkNum4_5);
-
-            checkNum5_0 = (TextView) layout.findViewById(R.id.checkNum5_0);
-            checkNum5_1 = (TextView) layout.findViewById(R.id.checkNum5_1);
-            checkNum5_2 = (TextView) layout.findViewById(R.id.checkNum5_2);
-            checkNum5_3 = (TextView) layout.findViewById(R.id.checkNum5_3);
-            checkNum5_4 = (TextView) layout.findViewById(R.id.checkNum5_4);
-            checkNum5_5 = (TextView) layout.findViewById(R.id.checkNum5_5);
-
 
             String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + drwNo;
             mAuthTask = new GetLottoNumTask(url);
@@ -437,131 +403,52 @@ public class MainActivity extends AppCompatActivity {
             if (reponseResult.equals("fail")) {
                 Log.i(TAG, "it doesn't exist number");
                 check_lotto_num_title.setText(R.string.not_yet_draw);
-                return;
-            }
+                for(int i=0; i<6; i++) {
+                    LinearLayout linearLayout = new LinearLayout(this);
+                    linearLayout.setLayoutParams(layoutParams);
+                    linearLayout.setGravity(Gravity.CENTER);
+                    for(int j=0; j<6; j++) {
+                        TextView tv = new TextView(this);
+                        tv.setLayoutParams(layoutParams);
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setText("-");
+                        linearLayout.addView(tv);
+                    }
+                    checkNumberLinear.addView(linearLayout);
+                }
+            } else {
+                lotto = new Lotto(result);
+                int[] lottoNumbers = lotto.getWinNumbers();
 
-            lotto = new Lotto(result);
-            int[] lottoNumbers = lotto.getWinNumbers();
-
-            boolean find = false;
-            for(int i=0; i<qrNumbers.size(); i++) {
-                if (i == 0) {
+                boolean find = false;
+                for(int i=0; i<qrNumbers.size(); i++) {
                     List<String> temp = new ArrayList<String>();
                     temp = qrNumbers.get(i).getQrNumber();
 
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
-                    if (find) checkNum1_0.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_0.setText(temp.get(0));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(1)));
-                    if (find) checkNum1_1.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_1.setText(temp.get(1));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(2)));
-                    if (find) checkNum1_2.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_2.setText(temp.get(2));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(3)));
-                    if (find) checkNum1_3.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_3.setText(temp.get(3));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(4)));
-                    if (find) checkNum1_4.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_4.setText(temp.get(4));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(5)));
-                    if (find) checkNum1_5.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum1_5.setText(temp.get(5));
-                } else if (i == 1) {
-                    List<String> temp = new ArrayList<String>();
-                    temp = qrNumbers.get(i).getQrNumber();
+                    LinearLayout linearLayout = new LinearLayout(this);
+                    linearLayout.setLayoutParams(layoutParams);
+                    linearLayout.setGravity(Gravity.CENTER);
 
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
-                    if (find) checkNum2_0.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_0.setText(temp.get(0));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(1)));
-                    if (find) checkNum2_1.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_1.setText(temp.get(1));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(2)));
-                    if (find) checkNum2_2.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_2.setText(temp.get(2));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(3)));
-                    if (find) checkNum2_3.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_3.setText(temp.get(3));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(4)));
-                    if (find) checkNum2_4.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_4.setText(temp.get(4));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(5)));
-                    if (find) checkNum2_5.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum2_5.setText(temp.get(5));
-                } else if (i == 2) {
-                    List<String> temp = new ArrayList<String>();
-                    temp = qrNumbers.get(i).getQrNumber();
-
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
-                    if (find) checkNum3_0.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_0.setText(temp.get(0));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(1)));
-                    if (find) checkNum3_1.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_1.setText(temp.get(1));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(2)));
-                    if (find) checkNum3_2.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_2.setText(temp.get(2));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(3)));
-                    if (find) checkNum3_3.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_3.setText(temp.get(3));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(4)));
-                    if (find) checkNum3_4.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_4.setText(temp.get(4));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(5)));
-                    if (find) checkNum3_5.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum3_5.setText(temp.get(5));
-                } else  if (i == 3) {
-                    List<String> temp = new ArrayList<String>();
-                    temp = qrNumbers.get(i).getQrNumber();
-
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
-                    if (find) checkNum4_0.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_0.setText(temp.get(0));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(1)));
-                    if (find) checkNum4_1.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_1.setText(temp.get(1));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(2)));
-                    if (find) checkNum4_2.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_2.setText(temp.get(2));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(3)));
-                    if (find) checkNum4_3.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_3.setText(temp.get(3));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(4)));
-                    if (find) checkNum4_4.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_4.setText(temp.get(4));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(5)));
-                    if (find) checkNum4_5.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum4_5.setText(temp.get(5));
-                } else if (i == 4) {
-                    List<String> temp = new ArrayList<String>();
-                    temp = qrNumbers.get(i).getQrNumber();
-
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
-                    if (find) checkNum5_0.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_0.setText(temp.get(0));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(1)));
-                    if (find) checkNum5_1.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_1.setText(temp.get(1));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(2)));
-                    if (find) checkNum5_2.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_2.setText(temp.get(2));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(3)));
-                    if (find) checkNum5_3.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_3.setText(temp.get(3));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(4)));
-                    if (find) checkNum5_4.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_4.setText(temp.get(4));
-                    find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(5)));
-                    if (find) checkNum5_5.setTextColor(getResources().getColor(R.color.right_color));
-                    checkNum5_5.setText(temp.get(5));
+                    for(int j=0; j<6; j++) {
+                        find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
+                        ImageView iv = new ImageView(this);
+                        iv.setLayoutParams(layoutParams);
+                        if (find) {
+                            iv = convertNumberToResource.convertNumberToResource(Integer.parseInt(temp.get(0)), iv);
+                            linearLayout.addView(iv);
+                        } else {
+                            iv = convertNumberToResource.convertNumberToResourceNoWin(Integer.parseInt(temp.get(0)), iv);
+                            linearLayout.addView(iv);
+                        }
+                    }
+                    checkNumberLinear.addView(linearLayout);
                 }
             }
-
             // popup btn click
             check_num_popup_close_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    pwindo.dismiss();
+                    Log.i(TAG, "Click Check_num_popup_close_btn");
+                    cehckNumPopupWindo.dismiss();
                 }
             });
         } catch (Exception e) {

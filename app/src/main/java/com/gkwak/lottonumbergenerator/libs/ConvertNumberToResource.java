@@ -160,4 +160,152 @@ public class ConvertNumberToResource {
         }
         return iv;
     }
+
+    public ImageView convertNumberToResourceNoWin(int number, ImageView iv) {
+//        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+//        ImageView iv = new ImageView(MainActivity);
+//        iv.setLayoutParams(imageParams);
+
+        switch (number) {
+            case 1:
+                iv.setImageResource(R.drawable.num1_nowin);
+                break;
+            case 2:
+                iv.setImageResource(R.drawable.num2_nowin);
+                break;
+            case 3:
+                iv.setImageResource(R.drawable.num3_nowin);
+                break;
+            case 4:
+                iv.setImageResource(R.drawable.num4_nowin);
+                break;
+            case 5:
+                iv.setImageResource(R.drawable.num5_nowin);
+                break;
+            case 6:
+                iv.setImageResource(R.drawable.num6_nowin);
+                break;
+            case 7:
+                iv.setImageResource(R.drawable.num7_nowin);
+                break;
+            case 8:
+                iv.setImageResource(R.drawable.num8_nowin);
+                break;
+            case 9:
+                iv.setImageResource(R.drawable.num9_nowin);
+                break;
+            case 10:
+                iv.setImageResource(R.drawable.num10_nowin);
+                break;
+            case 11:
+                iv.setImageResource(R.drawable.num11_nowin);
+                break;
+            case 12:
+                iv.setImageResource(R.drawable.num12_nowin);
+                break;
+            case 13:
+                iv.setImageResource(R.drawable.num13_nowin);
+                break;
+            case 14:
+                iv.setImageResource(R.drawable.num14_nowin);
+                break;
+            case 15:
+                iv.setImageResource(R.drawable.num15_nowin);
+                break;
+            case 16:
+                iv.setImageResource(R.drawable.num16_nowin);
+                break;
+            case 17:
+                iv.setImageResource(R.drawable.num17_nowin);
+                break;
+            case 18:
+                iv.setImageResource(R.drawable.num18_nowin);
+                break;
+            case 19:
+                iv.setImageResource(R.drawable.num19_nowin);
+                break;
+            case 20:
+                iv.setImageResource(R.drawable.num20_nowin);
+                break;
+            case 21:
+                iv.setImageResource(R.drawable.num21_nowin);
+                break;
+            case 22:
+                iv.setImageResource(R.drawable.num22_nowin);
+                break;
+            case 23:
+                iv.setImageResource(R.drawable.num23_nowin);
+                break;
+            case 24:
+                iv.setImageResource(R.drawable.num24_nowin);
+                break;
+            case 25:
+                iv.setImageResource(R.drawable.num25_nowin);
+                break;
+            case 26:
+                iv.setImageResource(R.drawable.num26_nowin);
+                break;
+            case 27:
+                iv.setImageResource(R.drawable.num27_nowin);
+                break;
+            case 28:
+                iv.setImageResource(R.drawable.num28_nowin);
+                break;
+            case 29:
+                iv.setImageResource(R.drawable.num29_nowin);
+                break;
+            case 30:
+                iv.setImageResource(R.drawable.num30_nowin);
+                break;
+            case 31:
+                iv.setImageResource(R.drawable.num31_nowin);
+                break;
+            case 32:
+                iv.setImageResource(R.drawable.num32_nowin);
+                break;
+            case 33:
+                iv.setImageResource(R.drawable.num33_nowin);
+                break;
+            case 34:
+                iv.setImageResource(R.drawable.num34_nowin);
+                break;
+            case 35:
+                iv.setImageResource(R.drawable.num35_nowin);
+                break;
+            case 36:
+                iv.setImageResource(R.drawable.num36_nowin);
+                break;
+            case 37:
+                iv.setImageResource(R.drawable.num37_nowin);
+                break;
+            case 38:
+                iv.setImageResource(R.drawable.num38_nowin);
+                break;
+            case 39:
+                iv.setImageResource(R.drawable.num39_nowin);
+                break;
+            case 40:
+                iv.setImageResource(R.drawable.num40_nowin);
+                break;
+            case 41:
+                iv.setImageResource(R.drawable.num41_nowin);
+                break;
+            case 42:
+                iv.setImageResource(R.drawable.num42_nowin);
+                break;
+            case 43:
+                iv.setImageResource(R.drawable.num43_nowin);
+                break;
+            case 44:
+                iv.setImageResource(R.drawable.num44_nowin);
+                break;
+            case 45:
+                iv.setImageResource(R.drawable.num45_nowin);
+                break;
+            default:
+                iv.setImageResource(R.drawable.num1);
+                break;
+        }
+        return iv;
+    }
 }
