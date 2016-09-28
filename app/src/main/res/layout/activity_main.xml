@@ -20,7 +20,7 @@
             android:id="@+id/win_number_drw"
             android:layout_weight="2"
             android:gravity="bottom|left|center"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textColor="@color/navy"
             android:layout_marginLeft="10dp" />
 
@@ -35,12 +35,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/qr_btn"
-        android:id="@+id/qr_btn"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:id="@+id/etc_info_linear"></LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -51,9 +51,23 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:text="@string/qr_btn"
+            android:id="@+id/qr_btn"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/today_num_btn"
             android:id="@+id/today_num_btn"
             android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <LinearLayout
             android:orientation="vertical"

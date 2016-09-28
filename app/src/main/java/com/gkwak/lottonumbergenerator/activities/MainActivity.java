@@ -126,12 +126,26 @@ public class MainActivity extends AppCompatActivity {
         String joinedWinNumbers = mPref.getString("winNumber", "no exist");
         int drwNo = mPref.getInt("drwNo", 1);
         int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
+        int firstPrzwnerCo = mPref.getInt("firstPrzwnerCo", 0);
+        String firstWinamnt = mPref.getString("firstWinamnt", "");
+
+        Log.i(TAG, "firstWinamnt : " + firstWinamnt);
 
         LinearLayout winNumberLinear = (LinearLayout) findViewById(R.id.win_number_linear);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
         TextView winNumberDrw = (TextView) findViewById(R.id.win_number_drw);
         convertNumberToResource = new ConvertNumberToResource();
         winNumbers = joinedWinNumbers.split(",");
+
+        LinearLayout etcInfoLinear = (LinearLayout) findViewById(R.id.etc_info_linear);
+        TextView coWinner = new TextView(this);
+        TextView winAmnt = new TextView(this);
+        coWinner.setLayoutParams(layoutParams);
+        winAmnt.setLayoutParams(layoutParams);
+        coWinner.setText("당첨자 수 : " + firstPrzwnerCo);
+        winAmnt.setText("당첨 액수 : " + firstWinamnt);
+        etcInfoLinear.addView(coWinner);
+        etcInfoLinear.addView(winAmnt);
 
         winNumberDrw.setText(drwNo + " 회 당첨번호");
         winNumberDrw.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
@@ -161,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
         charge_offerwall_btn = (Button) findViewById(R.id.charge_offerwall_btn);
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
 
+        // button font face
+        qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        charge_offerwall_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        charge_video_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + checkLottoNumberCount);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
@@ -430,14 +448,15 @@ public class MainActivity extends AppCompatActivity {
                     linearLayout.setGravity(Gravity.CENTER);
 
                     for(int j=0; j<6; j++) {
-                        find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(0)));
+                        find = this.isEqual(lottoNumbers, Integer.parseInt(temp.get(j)));
                         ImageView iv = new ImageView(this);
+                        layoutParams.setMargins(4, 4, 4, 4);
                         iv.setLayoutParams(layoutParams);
                         if (find) {
-                            iv = convertNumberToResource.convertNumberToResource(Integer.parseInt(temp.get(0)), iv);
+                            iv = convertNumberToResource.convertNumberToResource(Integer.parseInt(temp.get(j)), iv);
                             linearLayout.addView(iv);
                         } else {
-                            iv = convertNumberToResource.convertNumberToResourceNoWin(Integer.parseInt(temp.get(0)), iv);
+                            iv = convertNumberToResource.convertNumberToResourceNoWin(Integer.parseInt(temp.get(j)), iv);
                             linearLayout.addView(iv);
                         }
                     }
@@ -488,11 +507,13 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.setLayoutParams(layoutParams);
                 linearLayout.setGravity(Gravity.CENTER);
                 for (int i=0; i<6; i++) {
-                    TextView tv = new TextView(this);
-                    tv.setText(todayNumbers[j][i]+ "");
-                    tv.setLayoutParams(textParams);
-                    tv.setGravity(Gravity.CENTER);
-                    linearLayout.addView(tv);
+
+                    ImageView iv = new ImageView(this);
+                    layoutParams.setMargins(4, 4, 4, 4);
+                    iv.setLayoutParams(layoutParams);
+
+                    iv = convertNumberToResource.convertNumberToResource(todayNumbers[j][i], iv);
+                    linearLayout.addView(iv);
                 }
                 top.addView(linearLayout);
             }

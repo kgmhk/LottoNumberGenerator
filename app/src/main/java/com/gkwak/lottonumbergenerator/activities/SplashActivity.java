@@ -70,8 +70,11 @@ public class SplashActivity extends Activity {
                 editor.putInt("checkLottoNumberCount", 5);
             }
 
+            Log.i(TAG, "firstWinamnt : " + lotto.getFirstWinamnt());
             editor.putString("winNumber", winNumberStr);
             editor.putInt("drwNo", lotto.getDrwNo());
+            editor.putInt("firstPrzwnerCo", lotto.getFirstPrzwnerCo());
+            editor.putString("firstWinamnt", lotto.getFirstWinamnt()+"");
             editor.commit();
             Log.i(TAG, "Start Splash Activity");
         }

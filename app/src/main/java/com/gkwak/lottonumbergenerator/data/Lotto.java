@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class Lotto {
 
     private int bnusNo;
-    private int firstWinamnt;
+    private String firstWinamnt;
     private int totSellamnt;
     private Boolean returnValue;
     private int drwtNo1;
@@ -25,7 +25,7 @@ public class Lotto {
     public Lotto(JSONObject lotto) {
         try {
             this.bnusNo = lotto.getInt("bnusNo");
-            this.firstWinamnt = lotto.getInt("firstWinamnt");
+            this.firstWinamnt = lotto.getLong("firstWinamnt")+"";
             this.totSellamnt = lotto.getInt("totSellamnt");
             this.returnValue = Boolean.parseBoolean(lotto.getString("returnValue"));
             this.drwtNo1 = lotto.getInt("drwtNo1");
@@ -60,7 +60,7 @@ public class Lotto {
         return bnusNo;
     }
 
-    public int getFirstWinamnt() {
+    public String getFirstWinamnt() {
         return firstWinamnt;
     }
 
