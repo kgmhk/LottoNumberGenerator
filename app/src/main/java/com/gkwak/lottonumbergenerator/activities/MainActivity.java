@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -47,6 +48,7 @@ import com.gkwak.lottonumbergenerator.libs.QrCodeNumberParser;
 import com.gkwak.lottonumbergenerator.libs.TodayLottoGenerator;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.igaworks.IgawCommon;
@@ -68,7 +70,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static android.R.attr.breadCrumbShortTitle;
@@ -97,10 +101,22 @@ public class MainActivity extends AppCompatActivity {
     private ConvertNumberToResource convertNumberToResource;
     final UnityAdsListener unityAdsListener = new UnityAdsListener();
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // [START image_view_event]
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "main");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "MainActivty");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Activity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        // [END image_view_event]
 
         // font 적용
         Typekit.getInstance()
@@ -128,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
         int firstPrzwnerCo = mPref.getInt("firstPrzwnerCo", 0);
         String firstWinamnt = mPref.getString("firstWinamnt", "");
+        String convertCurrency = String.format(Currency.getInstance(Locale.KOREA).getSymbol() + "%,d", Long.parseLong(firstWinamnt));
 
         Log.i(TAG, "firstWinamnt : " + firstWinamnt);
 
@@ -137,27 +154,31 @@ public class MainActivity extends AppCompatActivity {
         convertNumberToResource = new ConvertNumberToResource();
         winNumbers = joinedWinNumbers.split(",");
 
-        LinearLayout etcInfoLinear = (LinearLayout) findViewById(R.id.etc_info_linear);
-        TextView coWinner = new TextView(this);
-        TextView winAmnt = new TextView(this);
-        coWinner.setLayoutParams(layoutParams);
-        winAmnt.setLayoutParams(layoutParams);
-        coWinner.setText("당첨자 수 : " + firstPrzwnerCo);
-        winAmnt.setText("당첨 액수 : " + firstWinamnt);
-        etcInfoLinear.addView(coWinner);
-        etcInfoLinear.addView(winAmnt);
+        TextView coWinner = (TextView) findViewById(R.id.coWinner);
+        TextView winAmnt = (TextView) findViewById(R.id.winAmnt);
+        TextView coWinnerTitle = (TextView) findViewById(R.id.coWinnerTitle);;
+        TextView winAmntTitle = (TextView) findViewById(R.id.winAmntTitle);
+
+        coWinner.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        winAmnt.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        coWinnerTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        winAmntTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+
+        coWinner.setText("" + firstPrzwnerCo);
+        winAmnt.setText("" + convertCurrency);
 
         winNumberDrw.setText(drwNo + " 회 당첨번호");
         winNumberDrw.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         for (int i=0; i<8; i++) {
-            layoutParams.setMargins(6, 20, 6, 16);
+            layoutParams.setMargins(6, 6, 6, 6);
             ImageView iv = new ImageView(this);
             iv.setLayoutParams(layoutParams);
-            iv.setScaleType(ImageView.ScaleType.FIT_START);
+//            iv.setScaleType(ImageView.ScaleType.CENTER);
 
             TextView tv = new TextView(this);
             tv.setLayoutParams(layoutParams);
-            tv.setGravity(Gravity.CENTER | Gravity.TOP);
+            tv.setGravity(Gravity.CENTER);
+            tv.setPadding(0,20,0,0);
             if (i == 6) {
                 tv.setText("+");
                 winNumberLinear.addView(tv);
@@ -179,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_offerwall_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_video_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
-        today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + checkLottoNumberCount);
+        today_num_btn.setText("오늘의 번호 \n\n 추첨 가능 횟수 : " + checkLottoNumberCount);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
         if (checkLottoNumberCount == 0) {
@@ -214,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        charge_video_btn.setText(R.string.unityAdsWait);
         disableButton(charge_video_btn);
         charge_video_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -545,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
         public void onUnityAdsReady(final String zoneId) {
 
             // TODO: 검수 완료 후 문자열 넣기
-            charge_video_btn.setText("TEST");
+            charge_video_btn.setText(R.string.unityAdsReady);
 
             DeviceLog.debug("onUnityAdsReady: " + zoneId);
             Utilities.runOnUiThread(new Runnable() {
@@ -592,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
                 today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount+1));
             }
             //TODO: 오퍼월 검수 후 텍스트 넣기
-            charge_video_btn.setText("WAIT");
+            charge_video_btn.setText(R.string.unityAdsWait);
             disableButton(charge_video_btn);
             toast("Finish", zoneId + " " + result);
         }

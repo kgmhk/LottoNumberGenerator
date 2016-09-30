@@ -4,6 +4,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#F5F1DE"
     android:layout_height="match_parent" >
 
 
@@ -22,7 +23,8 @@
             android:gravity="bottom|left|center"
             android:textSize="25sp"
             android:textColor="@color/navy"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -40,7 +42,56 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/etc_info_linear"></LinearLayout>
+        android:id="@+id/etc_info_linear">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="@string/coWinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/coWinnerTitle"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/navy" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/coWinner"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/right_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="@string/winAmnt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/winAmntTitle"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/navy" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/winAmnt"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="@color/right_color" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -66,14 +117,13 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
             <Button
                 android:layout_width="match_parent"
