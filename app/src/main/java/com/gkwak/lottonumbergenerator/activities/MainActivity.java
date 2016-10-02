@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         coWinnerTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         winAmntTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
 
-        coWinner.setText("" + firstPrzwnerCo);
+        coWinner.setText("" + firstPrzwnerCo + "명");
         winAmnt.setText("" + convertCurrency);
 
         winNumberDrw.setText(drwNo + " 회 당첨번호");
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         today_num_btn.setText("오늘의 번호 \n\n 추첨 가능 횟수 : " + checkLottoNumberCount);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
-        if (checkLottoNumberCount == 0) {
+        if (checkLottoNumberCount <= 0) {
             today_num_btn.setEnabled(false);
         }
 
@@ -285,6 +285,10 @@ public class MainActivity extends AppCompatActivity {
                     editor.putInt("checkLottoNumberCount", checkLottoNumberCount+reward);
                     editor.commit();
 
+                    if (checkLottoNumberCount+reward > 0) {
+                        today_num_btn.setEnabled(true);
+                    }
+
                     today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount+reward));
                 }
 
@@ -327,8 +331,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount-1));
 
-                                    if (checkLottoNumberCount-1 == 0) {
+                                    if (checkLottoNumberCount-1 <= 0) {
                                         today_num_btn.setEnabled(false);
+                                    } else {
+                                        today_num_btn.setEnabled(true);
                                     }
 
                                     todayLottoGenerator = new TodayLottoGenerator(drwNo);
@@ -542,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
 
             today_num_popup_close_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                enableButton(today_num_btn);
+//                enableButton(today_num_btn);
                 pwindo.dismiss();
                 }
             });
@@ -610,6 +616,10 @@ public class MainActivity extends AppCompatActivity {
                 int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
                 editor.putInt("checkLottoNumberCount", checkLottoNumberCount+1);
                 editor.commit();
+
+                if(checkLottoNumberCount+1 > 0) {
+                    today_num_btn.setEnabled(true);
+                }
 
                 today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount+1));
             }
