@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"草本乐 "</string>
+    <string name="action_settings">信息</string>
+    <string name="app_explain1">强力球彩票组</string>
+    <string name="app_explain2">在过去的中奖号码和数据分析提供了高开奖号码，最有可能的。</string>
+    <string name="app_explain3">尝试扭转你的人生度过一生拍摄盯着。</string>
+    <string name="app_explain4">如果你有你需要的功能，请随时通过电子邮件发送给我们您的意见开发。</string>
+    <string name="app_explain5">谢谢。</string>
+    <string name="btn_close">"关闭 "</string>
+    <string name="charge_btn">"获取开奖号码 "</string>
+    <string name="check_lotto_number">"检查中奖号码 "</string>
+    <string name="coWinner">"成者可以 "</string>
+    <string name="drw">"时间 "</string>
+    <string name="not_yet_draw">"强力球彩票还没有到。 "</string>
+    <string name="getting_lotto_number">"乐透数字的总和。 "</string>
+    <string name="qr_btn">"确认投票 "</string>
+    <string name="today_lotto_number">"推荐号码今日 "</string>
+    <string name="today_lotto_spcial_number">"特殊的开奖号码 "</string>
+    <string name="today_num_btn">"一天中的数 "</string>
+    <string name="unityAdsReady">"特殊的开奖号码抵达 "</string>
+    <string name="unityAdsWait">"特别彩票号码到达 "</string>
+    <string name="winAmnt">"中奖金额 "</string>
+</resources>

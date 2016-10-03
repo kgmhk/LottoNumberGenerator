@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">인생 한방</string>
     <string name="splash_name">Splash Screen</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">정보</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="qr_btn">당첨 확인</string>
     <string name="today_num_btn">오늘의 번호</string>
@@ -18,4 +18,10 @@
     <string name="winAmnt">당첨 금액</string>
     <string name="unityAdsReady">특별 추첨 번호 도착</string>
     <string name="unityAdsWait">특별 추첨 번호 도착 예정</string>
+    <string name="btn_close"> 닫 기</string>
+    <string name="app_explain1">인생 한방은 로또 추첨기 입니다.</string>
+    <string name="app_explain2">역대 당첨 번호와 데이터 분석을 통해 가장 가능성이 높은 추첨번호를 제공합니다.</string>
+    <string name="app_explain3">인생 한방을 통해 인생 역전을 노려 보세요.</string>
+    <string name="app_explain4">필요한 기능이 있으실 경우 개발자 메일로 의견을 보내주세요.</string>
+    <string name="app_explain5">감사합니다.</string>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#B0BEC5" />
+            <solid android:color="#90A4AE" />
+            <corners android:bottomRightRadius="8dp"
+                android:bottomLeftRadius="8dp"
+                android:topRightRadius="8dp"
+                android:topLeftRadius="8dp"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_menu_share"
+        android:bottom="6dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:top="6dp" />
+</layer-list>

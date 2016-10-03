@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/check_lotto_num_element"
+    android:id="@+id/settiong_info_element"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/custom_window_background"
@@ -17,8 +17,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/check_lotto_number"
-            android:id="@+id/check_lotto_num_title"
+            android:text="@string/app_name"
+            android:id="@+id/setting_info_title"
             android:textColor="@color/navy"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
@@ -27,10 +27,50 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/setting_info_linear"
             android:layout_weight="1"
-            android:id="@+id/check_lotto_num_linear">
+            android:gravity="center">
 
+            <TextView
+                android:text="@string/app_explain1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                android:textColor="@color/navy"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="@string/app_explain2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:textColor="@color/right_color"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="@string/app_explain3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textColor="@color/navy"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="@string/app_explain4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:textColor="@color/navy"
+                android:textSize="20sp" />
+
+            <TextView
+                android:text="@string/app_explain5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6"
+                android:textColor="@color/navy"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,7 +79,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/check_num_popup_close_btn"
+                android:id="@+id/setting_info_close_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -57,7 +97,7 @@
                 android:background="@drawable/share_btn_selector"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/check_num_popup_share_btn" />
+                android:id="@+id/setting_info_share_btn" />
         </LinearLayout>
 
     </LinearLayout>

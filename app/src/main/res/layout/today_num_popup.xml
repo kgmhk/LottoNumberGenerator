@@ -39,12 +39,12 @@
 
             <Button
                 android:id="@+id/today_num_popup_close_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="false"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="Close"
+                android:text="@string/btn_close"
                 android:background="@drawable/btn_selector"
                 android:elevation="1dp"
                 android:layout_marginTop="10dp"
@@ -53,10 +53,11 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:layout_weight="1"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/ic_menu_share"
-                android:id="@+id/today_num_popup_share_btn" />
+                android:background="@drawable/share_btn_selector"
+                android:id="@+id/today_num_popup_share_btn"
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
 

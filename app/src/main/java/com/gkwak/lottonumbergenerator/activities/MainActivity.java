@@ -5,10 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.IntegerRes;
@@ -66,11 +69,14 @@ import com.unity3d.ads.misc.Utilities;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -88,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
     String[] winNumbers;
     TextView check_lotto_num_title, today_lotto_number_title;
     Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn, charge_offerwall_btn,
-    charge_video_btn, today_num_popup_share_btn;
+    charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn;
 
-    private PopupWindow pwindo, cehckNumPopupWindo;
+    private PopupWindow pwindo, cehckNumPopupWindo ,settingInfoPopupWindo;
     private int mWidthPixels, mHeightPixels;
     private String interstitialPlacementId;
     private String incentivizedPlacementId;
@@ -396,6 +402,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            settingInfoPopupWindow(100, 600);
+            Log.i(TAG, "action_settings");
             return true;
         }
 
@@ -418,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
             cehckNumPopupWindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             check_num_popup_close_btn = (Button) layout.findViewById(R.id.check_num_popup_close_btn);
             check_lotto_num_title = (TextView) layout.findViewById(R.id.check_lotto_num_title);
+            check_num_popup_share_btn = (Button) layout.findViewById(R.id.check_num_popup_share_btn);
 
             String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + drwNo;
             mAuthTask = new GetLottoNumTask(url);
@@ -484,6 +493,12 @@ public class MainActivity extends AppCompatActivity {
                     cehckNumPopupWindo.dismiss();
                 }
             });
+
+            check_num_popup_share_btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    takeScreenshot();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -545,21 +560,34 @@ public class MainActivity extends AppCompatActivity {
 
             today_num_popup_share_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent msg = new Intent(Intent.ACTION_SEND);
-
-                    msg.addCategory(Intent.CATEGORY_DEFAULT);
-
-                    msg.putExtra(Intent.EXTRA_SUBJECT, "주제");
-
-                    msg.putExtra(Intent.EXTRA_TEXT, "내용");
-
-                    msg.putExtra(Intent.EXTRA_TITLE, "제목");
-
-                    msg.setType("text/plain");
-
-                    startActivity(Intent.createChooser(msg, "공유"));
+                    takeScreenshot();
                 }
             });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void settingInfoPopupWindow(int windowWidth, int windowHeight) {
+        try {
+            //  LayoutInflater 객체와 시킴
+            LayoutInflater inflater = (LayoutInflater) MainActivity.this
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View layout = inflater.inflate(R.layout.setting_info_popup,
+                    (ViewGroup) findViewById(R.id.settiong_info_element));
+
+
+            settingInfoPopupWindo = new PopupWindow(layout, mWidthPixels-windowWidth, mHeightPixels-windowHeight, true);
+            settingInfoPopupWindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+            settiong_info_close_btn = (Button) layout.findViewById(R.id.setting_info_close_btn);
+
+            settiong_info_close_btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    settingInfoPopupWindo.dismiss();
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -671,4 +699,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or OOM
+            e.printStackTrace();
+        }
+    }
+
+    private void openScreenshot(File imageFile) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "인생 역전 로또 번호 생성기");
+        intent.putExtra(Intent.EXTRA_TEXT, "인생 한방으로 인생 역전 하세요!!");
+        intent.putExtra(Intent.EXTRA_STREAM,  Uri.parse("file:///"+imageFile));
+        startActivity(intent);
+    }
 }
