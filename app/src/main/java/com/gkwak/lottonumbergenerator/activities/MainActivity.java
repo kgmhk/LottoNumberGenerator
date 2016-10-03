@@ -54,7 +54,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.igaworks.IgawCommon;
 import com.igaworks.adpopcorn.IgawAdpopcorn;
 import com.igaworks.interfaces.IgawRewardItem;
 import com.igaworks.interfaces.IgawRewardItemEventListener;
@@ -134,12 +133,6 @@ public class MainActivity extends AppCompatActivity {
         // 유니티 애드 연동
         UnityAds.initialize(MainActivity.this, UNITY_ADS_GAME_ID, unityAdsListener);
         UnityAds.setListener(unityAdsListener);
-        UnityAds.setDebugMode(true);
-
-        // 애드팝콘 오퍼월 연동
-        IgawCommon.startApplication(MainActivity.this);
-        String android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        IgawCommon.setUserId("user" + android_id);
 
         // Add AdMob
         AdView mAdView = (AdView) findViewById(R.id.adView);
@@ -261,49 +254,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        IgawCommon.setClientRewardEventListener(new IgawRewardItemEventListener() {
-            private int reward = 0;
-            @Override
-            public void onGetRewardInfo(boolean isSuccess, String resultMsg, IgawRewardItem[] rewardItems) {
-                for (IgawRewardItem rewardItem : rewardItems) {
-                    //아래 정보를 이용하여 유저에게 리워드를 지급합니다.
-                    rewardItem.getCampaignKey();
-                    rewardItem.getCampaignTitle();
-                    rewardItem.getRTID();
-                    rewardItem.getRewardQuantity();
-
-                    reward = rewardItem.getRewardQuantity();
-                    Log.i(TAG, "onGetRewardInfo rewardIte" + rewardItem.getRewardQuantity());
-
-                    //didGiveRewardItem 을 호출하여 리워드 지급 처리 완료를 IGAW 리워드 서버에 통지합니다.
-                    rewardItem.didGiveRewardItem();
-                }
-            }
-
-            @Override
-            public void onDidGiveRewardItemResult(boolean isSuccess, String resultMsg, int resultCode, String completedRewardKey) {
-                // TODO Auto-generated method stub
-                // 동일한 completedRewardKey에 대해서 중복지급방지처리를 합니다.
-                // 정상적인 리턴을 수신한 다음에 유저 리워드 지급 처리를 진행해야 합니다.
-                Log.i(TAG, "onDidGiveRewardItemResult isSu"+isSuccess +" resultMsg" + resultMsg +" resultCode"+resultCode +" completedRewardKey "+ completedRewardKey);
-
-                if (isSuccess) {
-                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = mPref.edit();
-                    int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
-                    editor.putInt("checkLottoNumberCount", checkLottoNumberCount+reward);
-                    editor.commit();
-
-                    if (checkLottoNumberCount+reward > 0) {
-                        today_num_btn.setEnabled(true);
-                    }
-
-                    today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount+reward));
-                }
-
-            }
-        });
-
         qr_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v){
                 Log.i(TAG, "onClick Button");
@@ -377,13 +327,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        IgawCommon.startSession(MainActivity.this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        IgawCommon.endSession();
     }
 
     @Override

@@ -97,7 +97,8 @@
                 android:background="@drawable/share_btn_selector"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/setting_info_share_btn" />
+                android:id="@+id/setting_info_share_btn"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
