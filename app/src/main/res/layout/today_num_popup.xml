@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/today_lotto_num_element"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -10,7 +11,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:layout_width="fill_parent"
@@ -20,27 +21,44 @@
             android:textColor="@color/navy"
             android:textSize="20dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:id="@+id/today_lotto_number_title" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:id="@+id/today_num_lotto_top">
         </LinearLayout>
 
-        <Button
-            android:id="@+id/today_num_popup_close_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="false"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="Close"
-            android:background="@drawable/btn_selector"
-            android:elevation="1dp"
-            android:layout_marginTop="10dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/today_num_popup_close_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="false"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Close"
+                android:background="@drawable/btn_selector"
+                android:elevation="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_menu_share"
+                android:id="@+id/today_num_popup_share_btn" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

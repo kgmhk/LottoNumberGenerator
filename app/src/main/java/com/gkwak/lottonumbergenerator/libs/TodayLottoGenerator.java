@@ -10,42 +10,41 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by gkwak on 9/17/16.
- */
 public class TodayLottoGenerator {
 
     private static String TAG = "TODAY_LOTTO_GENERATOR";
     private int drwNo;
     private GetLottoNumTask mAuthTask = null;
     private Lotto lotto;
+    private int resultLength;
+    private int drwLength;
 
-    public TodayLottoGenerator(int drwNo) {
+    public TodayLottoGenerator(int drwNo, int drwLength, int resultLength) {
         this.drwNo = drwNo;
+        this.drwLength = drwLength;
+        this.resultLength = resultLength;
     }
 
     public int[][] todayLottoNumbers() {
-        int[][] resultNumbers = new int[5][6];
-        int[][] todayNumbers= new int[10][6];
+        int[][] resultNumbers = new int[this.resultLength][6];
+        int[][] todayNumbers= new int[this.drwLength][6];
 
         int[] randomDrwNo = this.randomDrwNo();
 
 
         for (int i = 0; i < randomDrwNo.length; i++) {
             int[] a = this.getDrwNoLotto(randomDrwNo[i]);
-            Log.i(TAG, "Number : " + a);
             todayNumbers[i] = a;
         }
 
         Log.i(TAG, Arrays.deepToString(todayNumbers));
 
         Random rand = new Random();
-        for (int i=0; i<5; i++) {
+        for (int i=0; i<this.resultLength; i++) {
             for (int j=0; j<6; j++) {
-                int n = rand.nextInt(10);
+                int n = rand.nextInt(this.drwLength);
                 int r = rand.nextInt(6);
                 boolean validateNumber = this.validateNumber(resultNumbers[i], todayNumbers[n][r]);
-                Log.i(TAG, "valiedeate : "+ validateNumber);
                 if (validateNumber) {
                     resultNumbers[i][j] = todayNumbers[n][r];
                 }
@@ -56,7 +55,7 @@ public class TodayLottoGenerator {
             }
         }
 
-        for (int i=0; i<5; i++) {
+        for (int i=0; i<this.resultLength; i++) {
             Arrays.sort(resultNumbers[i]);
         }
         Log.i(TAG, Arrays.deepToString(resultNumbers));
@@ -73,10 +72,10 @@ public class TodayLottoGenerator {
     }
 
     private int[] randomDrwNo() {
-        int[] randomDrwNo = new int[10];
+        int[] randomDrwNo = new int[this.drwLength];
         Random rand = new Random();
 
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < randomDrwNo.length; i++) {
             int n = rand.nextInt(this.drwNo); // Gives n such that 0 <= n < 20
             randomDrwNo[i] = n;
         }

@@ -125,7 +125,8 @@
             android:textColor="@color/navy"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp" />
+            android:layout_marginRight="1dp"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -150,7 +151,8 @@
                 android:textColor="@color/navy"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"
-                android:layout_marginBottom="2dp" />
+                android:layout_marginBottom="2dp"
+                android:visibility="gone" />
 
             <Button
                 android:layout_width="match_parent"
@@ -159,7 +161,7 @@
                 android:id="@+id/charge_video_btn"
                 android:layout_weight="1"
                 android:background="@drawable/btn_selector"
-                android:textSize="12sp"
+                android:textSize="20sp"
                 android:textColor="@color/navy"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"

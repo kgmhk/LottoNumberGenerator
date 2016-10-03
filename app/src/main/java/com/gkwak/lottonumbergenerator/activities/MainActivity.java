@@ -80,12 +80,15 @@ import static android.R.attr.fingerprintAuthDrawable;
 import static android.R.attr.gravity;
 
 public class MainActivity extends AppCompatActivity {
+    private static int SPECIAL_RESULT_LENGTH = 1;
+    private static int RESULT_LENGTH = 5;
+    private static int DRW_LENGTH = 5;
     private static String TAG = "MAIN_ACTIVITY";
     private static String UNITY_ADS_GAME_ID = "1144759";
     String[] winNumbers;
-    TextView check_lotto_num_title;
+    TextView check_lotto_num_title, today_lotto_number_title;
     Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn, charge_offerwall_btn,
-    charge_video_btn;
+    charge_video_btn, today_num_popup_share_btn;
 
     private PopupWindow pwindo, cehckNumPopupWindo;
     private int mWidthPixels, mHeightPixels;
@@ -200,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_offerwall_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_video_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
-        today_num_btn.setText("오늘의 번호 \n\n 추첨 가능 횟수 : " + checkLottoNumberCount);
+        today_num_btn.setText(R.string.today_num_btn);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
         if (checkLottoNumberCount <= 0) {
@@ -304,7 +307,6 @@ public class MainActivity extends AppCompatActivity {
 
         today_num_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, TAG+"Today Number Button Click", Toast.LENGTH_LONG).show();
                 disableButton(today_num_btn);
                 mHandler = new Handler();
 
@@ -323,26 +325,14 @@ public class MainActivity extends AppCompatActivity {
                                 try
                                 {
                                     SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = mPref.edit();
                                     int drwNo = mPref.getInt("drwNo", 1);
-                                    int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
-                                    editor.putInt("checkLottoNumberCount", checkLottoNumberCount - 1);
-                                    editor.commit();
 
-                                    today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount-1));
-
-                                    if (checkLottoNumberCount-1 <= 0) {
-                                        today_num_btn.setEnabled(false);
-                                    } else {
-                                        today_num_btn.setEnabled(true);
-                                    }
-
-                                    todayLottoGenerator = new TodayLottoGenerator(drwNo);
+                                    todayLottoGenerator = new TodayLottoGenerator(drwNo, DRW_LENGTH, RESULT_LENGTH);
 
                                     int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
 
                                     mProgressDialog.dismiss();
-                                    todayLottoNumberPopupWindow(todayNumbers);
+                                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_number, 100, 500);
                                 }
                                 catch ( Exception e )
                                 {
@@ -362,13 +352,9 @@ public class MainActivity extends AppCompatActivity {
         if(result != null) {
             if(result.getContents() == null) {
                 Log.d("MainActivity", "Cancelled scan");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Log.d("MainActivity", "Scanned");
-                Log.i(TAG, "result : " + result.getContents().toString());
                 qrCodeNumberParser = new QrCodeNumberParser(result.getContents().toString());
                 checkLottoNumberPopupWindow(qrCodeNumberParser.getQrCodeNumber(), qrCodeNumberParser.getDrwNo());
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
             }
         } else {
             Log.d("MainActivity", "Weird");
@@ -512,7 +498,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void todayLottoNumberPopupWindow(int[][] todayNumbers) {
+    private void todayLottoNumberPopupWindow(int[][] todayNumbers, int todayNumberTitle, int windowWidth, int windowHeight) {
         try {
             //  LayoutInflater 객체와 시킴
             LayoutInflater inflater = (LayoutInflater) MainActivity.this
@@ -523,14 +509,18 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout top = (LinearLayout) layout.findViewById(R.id.today_num_lotto_top);
 
-            pwindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-500, true);
+            pwindo = new PopupWindow(layout, mWidthPixels-windowWidth, mHeightPixels-windowHeight, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             today_num_popup_close_btn = (Button) layout.findViewById(R.id.today_num_popup_close_btn);
+            today_lotto_number_title = (TextView) layout.findViewById(R.id.today_lotto_number_title);
+            today_num_popup_share_btn = (Button) layout.findViewById(R.id.today_num_popup_share_btn);
+
+            today_lotto_number_title.setText(todayNumberTitle);
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
 
-            for (int j=0; j<5; j++) {
+            for (int j=0; j<todayNumbers.length; j++) {
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setLayoutParams(layoutParams);
                 linearLayout.setGravity(Gravity.CENTER);
@@ -548,8 +538,26 @@ public class MainActivity extends AppCompatActivity {
 
             today_num_popup_close_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-//                enableButton(today_num_btn);
+                enableButton(today_num_btn);
                 pwindo.dismiss();
+                }
+            });
+
+            today_num_popup_share_btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent msg = new Intent(Intent.ACTION_SEND);
+
+                    msg.addCategory(Intent.CATEGORY_DEFAULT);
+
+                    msg.putExtra(Intent.EXTRA_SUBJECT, "주제");
+
+                    msg.putExtra(Intent.EXTRA_TEXT, "내용");
+
+                    msg.putExtra(Intent.EXTRA_TITLE, "제목");
+
+                    msg.setType("text/plain");
+
+                    startActivity(Intent.createChooser(msg, "공유"));
                 }
             });
         } catch (Exception e) {
@@ -597,36 +605,57 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            toast("Ready", zoneId);
         }
 
         @Override
         public void onUnityAdsStart(String zoneId) {
             DeviceLog.debug("onUnityAdsStart: " + zoneId);
-            toast("Start", zoneId);
         }
 
         @Override
         public void onUnityAdsFinish(String zoneId, UnityAds.FinishState result) {
             DeviceLog.debug("onUnityAdsFinish: " + zoneId + " - " + result);
+            Toast.makeText(MainActivity.this, R.string.getting_lotto_number, Toast.LENGTH_LONG).show();
             if (UnityAds.FinishState.COMPLETED == result) {
-                SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mPref.edit();
-                int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
-                editor.putInt("checkLottoNumberCount", checkLottoNumberCount+1);
-                editor.commit();
+                mHandler = new Handler();
 
-                if(checkLottoNumberCount+1 > 0) {
-                    today_num_btn.setEnabled(true);
-                }
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mProgressDialog = ProgressDialog.show(MainActivity.this, "",
+                                "로또 번호를 취합 중 입니다.", true);
+                        mHandler.postDelayed( new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                try
+                                {
+                                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+                                    int drwNo = mPref.getInt("drwNo", 1);
 
-                today_num_btn.setText("오늘의 번호 \n 추첨 가능 횟수 : " + (checkLottoNumberCount+1));
+                                    todayLottoGenerator = new TodayLottoGenerator(drwNo, DRW_LENGTH, SPECIAL_RESULT_LENGTH);
+
+                                    int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
+
+                                    mProgressDialog.dismiss();
+                                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_spcial_number, 100, 800);
+                                }
+                                catch ( Exception e )
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 10);
+                    }
+                } );
+
+                //TODO: 오퍼월 검수 후 텍스트 넣기
+                charge_video_btn.setText(R.string.unityAdsWait);
+                disableButton(charge_video_btn);
             }
-            //TODO: 오퍼월 검수 후 텍스트 넣기
-            charge_video_btn.setText(R.string.unityAdsWait);
-            disableButton(charge_video_btn);
-            toast("Finish", zoneId + " " + result);
         }
 
         @Override

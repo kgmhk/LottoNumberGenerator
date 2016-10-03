@@ -8,6 +8,7 @@
     <string name="banner_ad_unit_id">ca-app-pub-2778546304304506/4498970075</string>
     <string name="check_lotto_number">당첨 번호 확인</string>
     <string name="today_lotto_number">오늘의 추천 번호</string>
+    <string name="today_lotto_spcial_number">특별 추첨 번호</string>
     <string name="not_yet_draw">아직 추첨되지 않은 로또 입니다.</string>
     <string name="getting_lotto_number">로또 번호를 취합 중 입니다.</string>
     <string name="charge_btn">추첨 횟수 얻기</string>
@@ -15,6 +16,6 @@
     <string name="drw">회</string>
     <string name="coWinner">당첨자 수</string>
     <string name="winAmnt">당첨 금액</string>
-    <string name="unityAdsReady">추첨 횟수 선물이 도착</string>
-    <string name="unityAdsWait">잠시 후 무료 추첨 횟수를 도착 예정</string>
+    <string name="unityAdsReady">특별 추첨 번호 도착</string>
+    <string name="unityAdsWait">특별 추첨 번호 도착 예정</string>
 </resources>
