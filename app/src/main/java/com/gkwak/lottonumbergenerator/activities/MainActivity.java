@@ -471,7 +471,8 @@ public class MainActivity extends AppCompatActivity {
                     (ViewGroup) findViewById(R.id.today_lotto_num_element));
 
             LinearLayout top = (LinearLayout) layout.findViewById(R.id.today_num_lotto_top);
-
+            Log.i(TAG, "mHeightPixels : " + mHeightPixels);
+            if (mHeightPixels <= 800) windowHeight = 200;
             pwindo = new PopupWindow(layout, mWidthPixels-windowWidth, mHeightPixels-windowHeight, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             today_num_popup_close_btn = (Button) layout.findViewById(R.id.today_num_popup_close_btn);
