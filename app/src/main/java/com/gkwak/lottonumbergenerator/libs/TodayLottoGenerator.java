@@ -44,14 +44,10 @@ public class TodayLottoGenerator {
             for (int j=0; j<6; j++) {
                 int n = rand.nextInt(this.drwLength);
                 int r = rand.nextInt(6);
-                boolean validateNumber = this.validateNumber(resultNumbers[i], todayNumbers[n][r]);
-                if (validateNumber) {
-                    resultNumbers[i][j] = todayNumbers[n][r];
-                }
-                else {
-                    resultNumbers[i][j] = rand.nextInt(46);
-                }
-
+                if (rand.nextBoolean()) this.validateNumber(resultNumbers[i], rand.nextInt(46));
+                else this.validateNumber(resultNumbers[i], todayNumbers[n][r]);
+                int validateNumber = this.validateNumber(resultNumbers[i], todayNumbers[n][r]);
+                resultNumbers[i][j] = validateNumber;
             }
         }
 
@@ -63,12 +59,13 @@ public class TodayLottoGenerator {
         return resultNumbers;
     }
 
-    private boolean validateNumber(int[] savedNumber, int randomNumber) {
-        if (savedNumber.length == 0) return true;
+    private int validateNumber(int[] savedNumber, int randomNumber) {
+        Random rand = new Random();
+        if (savedNumber.length == 0) return randomNumber;
         for (int i=0; i<savedNumber.length; i++) {
-            if (savedNumber[i] == randomNumber) return false;
+            if (savedNumber[i] == randomNumber) return this.validateNumber(savedNumber, rand.nextInt(46));
         }
-        return true;
+        return randomNumber;
     }
 
     private int[] randomDrwNo() {
