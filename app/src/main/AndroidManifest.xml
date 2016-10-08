@@ -43,20 +43,7 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.igaworks.adpopcorn.activity.ApOfferWallActivity_NT"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait"/>
 
-        <activity android:name="com.igaworks.adpopcorn.activity.ApCSActivity_NT"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name="com.igaworks.adpopcorn.activity.ApVideoAdActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:screenOrientation="landscape"/>
-        <meta-data android:name="igaworks_app_key" android:value="53026081" />
-        <meta-data android:name="igaworks_hash_key" android:value="d686010d666a4ebf" />
-        <meta-data android:name="igaworks_reward_server_type" android:value="client"/>
     </application>
 
 </manifest>

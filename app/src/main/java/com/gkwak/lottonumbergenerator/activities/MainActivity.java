@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -359,18 +361,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLottoNumberPopupWindow(List<QrLotto> qrNumbers, int drwNo) {
+        final View layout;
         try {
             //  LayoutInflater 객체와 시킴
             LayoutInflater inflater = (LayoutInflater) MainActivity.this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View layout = inflater.inflate(R.layout.check_num_popup,
+            layout = inflater.inflate(R.layout.check_num_popup,
                     (ViewGroup) findViewById(R.id.check_lotto_num_element));
 
             LinearLayout checkNumberLinear = (LinearLayout) layout.findViewById(R.id.check_lotto_num_linear);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
 
-            cehckNumPopupWindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-500, true);
+            int windowHeight = 500;
+            if (mHeightPixels <= 800) windowHeight = 200;
+            cehckNumPopupWindo = new PopupWindow(layout, mWidthPixels-100, mHeightPixels-windowHeight, true);
             cehckNumPopupWindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
             check_num_popup_close_btn = (Button) layout.findViewById(R.id.check_num_popup_close_btn);
             check_lotto_num_title = (TextView) layout.findViewById(R.id.check_lotto_num_title);
@@ -444,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
 
             check_num_popup_share_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    takeScreenshot();
+                    takeScreenshot(layout);
                 }
             });
         } catch (Exception e) {
@@ -462,16 +467,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void todayLottoNumberPopupWindow(int[][] todayNumbers, int todayNumberTitle, int windowWidth, int windowHeight) {
+        final View layout;
         try {
             //  LayoutInflater 객체와 시킴
-            LayoutInflater inflater = (LayoutInflater) MainActivity.this
+            final LayoutInflater inflater = (LayoutInflater) MainActivity.this
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View layout = inflater.inflate(R.layout.today_num_popup,
+            layout = inflater.inflate(R.layout.today_num_popup,
                     (ViewGroup) findViewById(R.id.today_lotto_num_element));
 
-            LinearLayout top = (LinearLayout) layout.findViewById(R.id.today_num_lotto_top);
-            Log.i(TAG, "mHeightPixels : " + mHeightPixels);
+            final LinearLayout top = (LinearLayout) layout.findViewById(R.id.today_num_lotto_top);
             if (mHeightPixels <= 800) windowHeight = 200;
             pwindo = new PopupWindow(layout, mWidthPixels-windowWidth, mHeightPixels-windowHeight, true);
             pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
@@ -509,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
 
             today_num_popup_share_btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    takeScreenshot();
+                    takeScreenshot(layout);
                 }
             });
         } catch (Exception e) {
@@ -648,7 +653,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void takeScreenshot() {
+    public void takeScreenshot(View v) {
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
 
@@ -661,6 +666,19 @@ public class MainActivity extends AppCompatActivity {
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
             v1.setDrawingCacheEnabled(false);
+
+            v.setDrawingCacheEnabled(true);
+            Bitmap bitmapDialog = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false);
+
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            float centerX = (width  - bitmapDialog.getWidth()) * 0.5f;
+            float centerY = (height- bitmapDialog.getHeight()) * 0.5f;
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+            canvas.drawBitmap(bitmapDialog, centerX, centerY, paint);
 
             File imageFile = new File(mPath);
 
@@ -681,7 +699,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_SUBJECT, "인생 역전 로또 번호 생성기");
-        intent.putExtra(Intent.EXTRA_TEXT, "인생 한방으로 인생 역전 하세요!!");
+        intent.putExtra(Intent.EXTRA_TEXT, "인생 한방으로 인생 역전 하세요!! \n 다운로드 : https://play.google.com/store/apps/details?id=com.gkwak.lottonumbergenerator");
         intent.putExtra(Intent.EXTRA_STREAM,  Uri.parse("file:///"+imageFile));
         startActivity(intent);
     }
