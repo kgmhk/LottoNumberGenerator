@@ -1,5 +1,8 @@
 package com.gkwak.lottonumbergenerator.libs;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,14 +17,20 @@ public class WebParser extends AsyncTask<String, Void, String> {
 
     private static String TAG = "WEB_PARSER";
     private String url = "";
+//    private Activity mainActivity = null;
     public WebParser(String url) throws IOException {
         this.url = url;
+//        this.mainActivity = mainActivity;
     }
 
     @Override
     protected String doInBackground(String... strings) {
         StringBuffer buffer = new StringBuffer();
         try {
+
+            //  지도 주소
+            // http://www.nlotto.co.kr/lotto645Confirm.do?method=topStoreLocation&gbn=lotto&rtlrId=11190018
+
 //            Document doc = Jsoup.connect(url)
 //                    .header("content-type", "multipart/form-data; boundary=---011000010111000001101001")
 //                    .header("authorization", "Basic ZmJfMTY2MTUzMDc0NzQ2MTk5NDox").header("cache-control", "no-cache")
@@ -34,8 +43,17 @@ public class WebParser extends AsyncTask<String, Void, String> {
 
             Log.d("JSwa", "Connecting to ["+url+"]");
             Document doc = Jsoup.connect(url).get();
-//            Log.d("JSwa", "Connected to ["+strings[0]+"]");
 // Get document (HTML page) title
+            Elements tbody = doc.getElementsByTag("tbody");
+            for (Element body: tbody) {
+                Log.i(TAG, "------table------------");
+                Elements trs = body.getElementsByTag("tr");
+                for (Element tr: trs) {
+                    Log.i(TAG, "-----------tr------------");
+                    Log.i(TAG, tr.toString());
+                }
+
+            }
             String title = doc.title();
             Log.d("JSwA", "Title ["+title+"]");
             buffer.append("Title: " + title + "rn");

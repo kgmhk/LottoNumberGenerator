@@ -295,6 +295,9 @@ public class MainActivity extends AppCompatActivity {
 
                                     webParser = new WebParser(url);
 //                                    JSONObject result = null;
+
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nlotto.co.kr/lotto645Confirm.do?method=topStoreLocation&gbn=lotto&rtlrId=11190018"));
+                                    startActivity(intent);
                                     try {
                                         webParser.execute().get();
                                     } catch (InterruptedException e) {
