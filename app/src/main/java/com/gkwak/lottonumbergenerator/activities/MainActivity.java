@@ -51,6 +51,7 @@ import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
 import com.gkwak.lottonumbergenerator.libs.HttpRequest;
 import com.gkwak.lottonumbergenerator.libs.QrCodeNumberParser;
 import com.gkwak.lottonumbergenerator.libs.TodayLottoGenerator;
+import com.gkwak.lottonumbergenerator.libs.WebParser;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     String[] winNumbers;
     TextView check_lotto_num_title, today_lotto_number_title;
     Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn, charge_offerwall_btn,
-    charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn;
+    charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn, find_win_store_btn;
 
     private PopupWindow pwindo, cehckNumPopupWindo ,settingInfoPopupWindo;
     private int mWidthPixels, mHeightPixels;
@@ -105,10 +106,13 @@ public class MainActivity extends AppCompatActivity {
     private TodayLottoGenerator todayLottoGenerator;
     private QrCodeNumberParser qrCodeNumberParser;
     private Handler mHandler;
+    private Handler storeFinderHandler;
     private ProgressDialog mProgressDialog;
+    private ProgressDialog storeFinderProgressDialog;
     private GetLottoNumTask mAuthTask = null;
     private Lotto lotto;
     private ConvertNumberToResource convertNumberToResource;
+    private WebParser webParser = null;
     final UnityAdsListener unityAdsListener = new UnityAdsListener();
 
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -199,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
         today_num_btn = (Button) findViewById(R.id.today_num_btn);
         charge_offerwall_btn = (Button) findViewById(R.id.charge_offerwall_btn);
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
+        find_win_store_btn = (Button) findViewById(R.id.find_win_store_btn);
 
         // button font face
         qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
@@ -260,6 +265,56 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Log.i(TAG, "onClick Button");
                 IntentIntegrator.initiateScan(MainActivity.this);
+            }
+        });
+
+        find_win_store_btn.setOnClickListener(new Button.OnClickListener() {
+
+            public void onClick(View v) {
+                storeFinderHandler = new Handler();
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+
+                        Log.i(TAG, "onCLick store Finder");
+                        storeFinderProgressDialog = ProgressDialog.show(MainActivity.this, "",
+                                "로또 당첨점 찾는중....", true);
+                        storeFinderHandler.postDelayed( new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                try
+                                {
+//                                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+//                                    int drwNo = mPref.getInt("drwNo", 1);
+                                    String url = "http://www.nlotto.co.kr/lotto645Confirm.do?method=topStore&pageGubun=L645";
+//                                    webParser = new WebParser(url);
+
+                                    webParser = new WebParser(url);
+//                                    JSONObject result = null;
+                                    try {
+                                        webParser.execute().get();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
+//                                    int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
+
+                                    storeFinderProgressDialog.dismiss();
+//                                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_number, 100, 500);
+                                }
+                                catch ( Exception e )
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, 10);
+                    }
+                } );
             }
         });
 
