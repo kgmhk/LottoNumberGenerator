@@ -269,55 +269,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         find_win_store_btn.setOnClickListener(new Button.OnClickListener() {
-
             public void onClick(View v) {
-                storeFinderHandler = new Handler();
-                runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-
-                        Log.i(TAG, "onCLick store Finder");
-                        storeFinderProgressDialog = ProgressDialog.show(MainActivity.this, "",
-                                "로또 당첨점 찾는중....", true);
-                        storeFinderHandler.postDelayed( new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                try
-                                {
-//                                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
-//                                    int drwNo = mPref.getInt("drwNo", 1);
-                                    String url = "http://www.nlotto.co.kr/lotto645Confirm.do?method=topStore&pageGubun=L645";
-//                                    webParser = new WebParser(url);
-
-                                    webParser = new WebParser(url);
-//                                    JSONObject result = null;
-
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nlotto.co.kr/lotto645Confirm.do?method=topStoreLocation&gbn=lotto&rtlrId=11190018"));
-                                    startActivity(intent);
-                                    try {
-                                        webParser.execute().get();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    }
-//                                    int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
-
-                                    storeFinderProgressDialog.dismiss();
-//                                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_number, 100, 500);
-                                }
-                                catch ( Exception e )
-                                {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, 10);
-                    }
-                } );
+                    Intent intent = new Intent(getBaseContext(), StoreActivity.class);
+                    startActivity(intent);
             }
         });
 

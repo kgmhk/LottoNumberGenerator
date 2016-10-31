@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,19 +16,21 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class WebParser extends AsyncTask<String, Void, String> {
+public class WebParser extends AsyncTask<Elements, Void, Elements> {
 
     private static String TAG = "WEB_PARSER";
     private String url = "";
+    private LinearLayout topLayout;
 //    private Activity mainActivity = null;
-    public WebParser(String url) throws IOException {
+    public WebParser(String url, LinearLayout topLayout) throws IOException {
         this.url = url;
+        this.topLayout = topLayout;
 //        this.mainActivity = mainActivity;
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        StringBuffer buffer = new StringBuffer();
+    protected Elements doInBackground(Elements... strings) {
+        Elements elements = new Elements();
         try {
 
             //  지도 주소
@@ -45,46 +50,32 @@ public class WebParser extends AsyncTask<String, Void, String> {
             Document doc = Jsoup.connect(url).get();
 // Get document (HTML page) title
             Elements tbody = doc.getElementsByTag("tbody");
-            for (Element body: tbody) {
-                Log.i(TAG, "------table------------");
-                Elements trs = body.getElementsByTag("tr");
-                for (Element tr: trs) {
-                    Log.i(TAG, "-----------tr------------");
-                    Log.i(TAG, tr.toString());
-                }
-
-            }
-            String title = doc.title();
-            Log.d("JSwA", "Title ["+title+"]");
-            buffer.append("Title: " + title + "rn");
-
-// Get meta info
-            Elements metaElems = doc.select("meta");
-            buffer.append("META DATArn");
-            for (Element metaElem : metaElems) {
-                String name = metaElem.attr("name");
-                String content = metaElem.attr("content");
-                buffer.append("name ["+name+"] - content ["+content+"] rn");
-            }
-
-            Elements topicList = doc.select("h2.topic");
-            buffer.append("Topic listrn");
-            for (Element topic : topicList) {
-                String data = topic.text();
-
-                buffer.append("Data ["+data+"] rn");
-            }
+//            for (Element body: tbody) {
+//                Log.i(TAG, "------table------------");
+//                Elements trs = body.getElementsByTag("tr");
+//                for (Element tr: trs) {
+//                    Log.i(TAG, "-----------tr------------");
+//                    Log.i(TAG, tr.toString());
+//                    Elements tds = tr.getElementsByTag("td");
+//                    for (Element td: tds) {
+//                        Log.i(TAG, "-----------td------------");
+////                        Log.i(TAG, td.toString());
+//                        Log.i(TAG + "val", td.ownText());
+//                    }
+//
+//                }
+//            }
+            return tbody;
 
         }
         catch(Throwable t) {
             t.printStackTrace();
         }
-
-        return buffer.toString();
+        return elements;
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(Elements s) {
         super.onPostExecute(s);
 //        respText.setText(s);
     }
