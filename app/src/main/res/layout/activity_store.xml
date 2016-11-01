@@ -11,27 +11,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gkwak.lottonumbergenerator.activities.StoreActivity">
 
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="horizontal|vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:scrollbars="horizontal|vertical"
+            android:layout_marginBottom="50dp">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/store_top_container"></LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/store_top_container">
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
@@ -39,4 +49,5 @@
         ads:adUnitId="@string/banner_ad_unit_id"
         tools:ignore="ObsoleteLayoutParam">
     </com.google.android.gms.ads.AdView>
+
 </RelativeLayout>

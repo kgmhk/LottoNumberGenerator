@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import com.gkwak.lottonumbergenerator.R;
 import com.gkwak.lottonumbergenerator.libs.WebParser;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -35,6 +38,12 @@ public class StoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+
+        // Add AdMob
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        assert mAdView != null;
+        mAdView.loadAd(adRequest);
 
         topLayout = (LinearLayout) findViewById(R.id.store_top_container);
 
@@ -55,15 +64,53 @@ public class StoreActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
+        int countNum = 1;
         for (Element table: resultHtml) {
-            TableLayout.LayoutParams tableRowParams=
+            // title layout
+            int leftMargin=0;
+            int topMargin=0;
+            int rightMargin=0;
+            int bottomMargin=50;
+            TableLayout.LayoutParams titleParams=
                     new TableLayout.LayoutParams
                             (TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT, 1);
+            titleParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
+            TextView title = new TextView(this);
+            title.setText(countNum++ + getResources().getString(R.string.winner_sell_place));
+            title.setTextSize(20);
+            title.setLayoutParams(titleParams);
+
+            topLayout.addView(title);
+            TableLayout.LayoutParams tableRowParams=
+                    new TableLayout.LayoutParams
+                            (TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.MATCH_PARENT);
             TableLayout tl = new TableLayout(this);
             tl.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             Elements trs = table.getElementsByTag("tr");
+
+            // table title
+
+            Elements theads = table.getElementsByTag("thead");
+            Log.i(TAG, theads.toString());
+
+            for (Element thead: theads) {
+                TableRow tableRow = new TableRow(this);
+                tableRow.setLayoutParams(tableRowParams);
+//                tr.setBackgroundResource(R.drawable.table_row_border);
+                Elements ths = thead.getElementsByTag("th");
+                for (Element th: ths) {
+                    TextView a = new TextView(this);
+                    a.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT,1));
+                    a.setText(th.ownText());
+                    a.setTextSize(12);
+                    a.setGravity(Gravity.CENTER);
+                    a.setTypeface(null, Typeface.BOLD);
+                    tableRow.addView(a);
+                }
+                tl.addView(tableRow);
+            }
+
             for (Element tr: trs) {
                 TableRow tableRow = new TableRow(this);
                 tableRow.setLayoutParams(tableRowParams);
@@ -72,19 +119,25 @@ public class StoreActivity extends AppCompatActivity {
                 for (Element td: tds) {
                     Elements aTag = td.getElementsByTag("a");
                     if (!aTag.toString().isEmpty()) {
-                        Button btn = new Button(this);
+                        ImageButton btn = new ImageButton(this);
                         String addr = aTag.attr("onclick").replaceAll("[^0-9]", "");
-                        btn.setText(addr);
+                        btn.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                        btn.setImageResource(android.R.drawable.ic_dialog_map);
                         MyLovelyOnClickListener myClass = new MyLovelyOnClickListener(addr);
                         btn.setOnClickListener(myClass);
-
                         tableRow.addView(btn);
-                        Log.i(TAG, "여기는 주소");
                     } else {
+                        String tempString = td.ownText();
+                        String[] splitedString = tempString.split(" ");
                         TextView a = new TextView(this);
-                        a.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1));
-                        a.setText(td.ownText());
-                        a.setTextSize(9);
+                        a.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT,1));
+                        if (splitedString.length > 2) {
+                            a.setText(splitedString[0] + " " + splitedString[1] + " " + splitedString[2]);
+                        } else {
+                            a.setText(tempString);
+                        }
+                        a.setTextSize(10);
+                        a.setGravity(Gravity.CENTER_VERTICAL);
                         a.setTypeface(null, Typeface.BOLD);
 //                    a.setGravity(Gravity.CENTER);
                         tableRow.addView(a);

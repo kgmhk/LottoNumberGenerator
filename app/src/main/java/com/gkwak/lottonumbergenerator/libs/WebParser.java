@@ -49,7 +49,7 @@ public class WebParser extends AsyncTask<Elements, Void, Elements> {
             Log.d("JSwa", "Connecting to ["+url+"]");
             Document doc = Jsoup.connect(url).get();
 // Get document (HTML page) title
-            Elements tbody = doc.getElementsByTag("tbody");
+            Elements tbody = doc.getElementsByTag("table");
 //            for (Element body: tbody) {
 //                Log.i(TAG, "------table------------");
 //                Elements trs = body.getElementsByTag("tr");

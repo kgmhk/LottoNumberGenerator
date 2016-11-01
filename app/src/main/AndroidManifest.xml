@@ -45,7 +45,9 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".activities.StoreActivity"></activity>
+        <activity
+            android:name=".activities.StoreActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

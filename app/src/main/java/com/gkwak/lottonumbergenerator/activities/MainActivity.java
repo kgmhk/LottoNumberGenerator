@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     private static String UNITY_ADS_GAME_ID = "1144759";
     String[] winNumbers;
     TextView check_lotto_num_title, today_lotto_number_title;
-    Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn, charge_offerwall_btn,
+    Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn,
     charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn, find_win_store_btn;
 
     private PopupWindow pwindo, cehckNumPopupWindo ,settingInfoPopupWindo;
@@ -201,13 +201,12 @@ public class MainActivity extends AppCompatActivity {
 
         qr_btn = (Button) findViewById(R.id.qr_btn);
         today_num_btn = (Button) findViewById(R.id.today_num_btn);
-        charge_offerwall_btn = (Button) findViewById(R.id.charge_offerwall_btn);
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
         find_win_store_btn = (Button) findViewById(R.id.find_win_store_btn);
 
         // button font face
         qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
-        charge_offerwall_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        find_win_store_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_video_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         today_num_btn.setText(R.string.today_num_btn);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
@@ -251,13 +250,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 disableButton(charge_video_btn);
                 UnityAds.show(MainActivity.this, incentivizedPlacementId);
-            }
-        });
-
-        charge_offerwall_btn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v){
-                Log.i(TAG, "onClick charge Button");
-                IgawAdpopcorn.openOfferWall(MainActivity.this);
             }
         });
 

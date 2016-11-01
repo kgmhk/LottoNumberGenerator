@@ -24,4 +24,6 @@
     <string name="app_explain3">인생 한방을 통해 인생 역전을 노려 보세요.</string>
     <string name="app_explain4">필요한 기능이 있으실 경우 개발자 메일로 의견을 보내주세요.</string>
     <string name="app_explain5">감사합니다.</string>
+    <string name="winner_sell_place">등 판매 장소</string>
+    <string name="win_place">당첨 판매점</string>
 </resources>
