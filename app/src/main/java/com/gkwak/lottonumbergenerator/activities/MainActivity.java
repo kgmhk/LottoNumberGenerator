@@ -315,7 +315,14 @@ public class MainActivity extends AppCompatActivity {
             if(result.getContents() == null) {
                 Log.d("MainActivity", "Cancelled scan");
             } else {
-                qrCodeNumberParser = new QrCodeNumberParser(result.getContents().toString());
+                try {
+                    qrCodeNumberParser = new QrCodeNumberParser(result.getContents().toString());
+                } catch (Exception e) {
+                    Log.i(TAG, "Exceoption E : " + e.toString());
+                    Toast.makeText(MainActivity.this, R.string.wrong_qr_code, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 checkLottoNumberPopupWindow(qrCodeNumberParser.getQrCodeNumber(), qrCodeNumberParser.getDrwNo());
             }
         } else {
@@ -603,40 +610,22 @@ public class MainActivity extends AppCompatActivity {
             DeviceLog.debug("onUnityAdsFinish: " + zoneId + " - " + result);
             Toast.makeText(MainActivity.this, R.string.getting_lotto_number, Toast.LENGTH_LONG).show();
             if (UnityAds.FinishState.COMPLETED == result) {
-                mHandler = new Handler();
 
-                runOnUiThread(new Runnable()
+                try
                 {
-                    @Override
-                    public void run()
-                    {
-                        mProgressDialog = ProgressDialog.show(MainActivity.this, "",
-                                "로또 번호를 취합 중 입니다.", true);
-                        mHandler.postDelayed( new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                try
-                                {
-                                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
-                                    int drwNo = mPref.getInt("drwNo", 1);
+                    SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
+                    int drwNo = mPref.getInt("drwNo", 1);
 
-                                    todayLottoGenerator = new TodayLottoGenerator(drwNo, DRW_LENGTH, SPECIAL_RESULT_LENGTH);
+                    todayLottoGenerator = new TodayLottoGenerator(drwNo, DRW_LENGTH, SPECIAL_RESULT_LENGTH);
 
-                                    int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
+                    int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
 
-                                    mProgressDialog.dismiss();
-                                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_spcial_number, 100, 800);
-                                }
-                                catch ( Exception e )
-                                {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, 10);
-                    }
-                } );
+                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_spcial_number, 100, 800);
+                }
+                catch ( Exception e )
+                {
+                    e.printStackTrace();
+                }
 
                 //TODO: 오퍼월 검수 후 텍스트 넣기
                 charge_video_btn.setText(R.string.unityAdsWait);
