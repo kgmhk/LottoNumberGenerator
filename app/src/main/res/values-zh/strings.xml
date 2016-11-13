@@ -21,4 +21,6 @@
     <string name="unityAdsReady">"特殊的开奖号码抵达 "</string>
     <string name="unityAdsWait">"特别彩票号码到达 "</string>
     <string name="winAmnt">"中奖金额 "</string>
+    <string name="info">购买指南</string>
+    <string name="store_place">"销售店 "</string>
 </resources>

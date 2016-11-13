@@ -10,7 +10,7 @@
     <string name="today_lotto_number">오늘의 추천 번호</string>
     <string name="today_lotto_spcial_number">특별 추첨 번호</string>
     <string name="not_yet_draw">아직 추첨되지 않은 로또 입니다.</string>
-    <string name="wrong_qr_code">잘못된 QR 코드 입니다.</string>
+    <string name="wrong_qr_code" translatable="false">잘못된 QR 코드 입니다.</string>
     <string name="getting_lotto_number">로또 번호를 취합 중 입니다.</string>
     <string name="charge_btn">추첨 횟수 얻기</string>
     <string name="test_btn" translatable="false">TEST</string>
