@@ -17,13 +17,13 @@ public class QrCodeNumberParser {
         this.qrCode = qrCode;
     }
 
-    public List<QrLotto> getQrCodeNumber() {
+    public List<QrLotto> getQrCodeNumber() throws Exception {
         Log.i(TAG, qrCode);
 
         List<QrLotto> parseredQrCodeNumbers = new ArrayList<QrLotto>();
         try {
             String[] splitedQrCode = qrCode.split("v=");
-            String[] splitedCodeNumber = splitedQrCode[1].split("m");
+            String[] splitedCodeNumber = splitedQrCode[1].split("q");
 
             this.drwNo = Integer.parseInt(splitedCodeNumber[0]);
 //            if (splitedCodeNumber.length == 1) throw new Error("it is wrong qrCode");
@@ -47,8 +47,9 @@ public class QrCodeNumberParser {
             }
         } catch (Exception e) {
             Log.i(TAG, "Exception Error : " + e.toString());
-            throw e;
+            throw new Exception("it was wrong qrCode");
         }
+        Log.i(TAG, "test error");
         return parseredQrCodeNumbers;
     }
 

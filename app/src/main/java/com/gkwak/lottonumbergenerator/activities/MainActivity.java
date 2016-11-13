@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
     String[] winNumbers;
     TextView check_lotto_num_title, today_lotto_number_title;
     Button qr_btn, today_num_btn, today_num_popup_close_btn, check_num_popup_close_btn,
-    charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn, find_win_store_btn;
+    charge_video_btn, today_num_popup_share_btn, check_num_popup_share_btn, settiong_info_close_btn,
+            find_win_store_btn, info_btn, find_store_btn;
 
     private PopupWindow pwindo, cehckNumPopupWindo ,settingInfoPopupWindo;
     private int mWidthPixels, mHeightPixels;
@@ -203,11 +204,15 @@ public class MainActivity extends AppCompatActivity {
         today_num_btn = (Button) findViewById(R.id.today_num_btn);
         charge_video_btn = (Button) findViewById(R.id.charge_video_btn);
         find_win_store_btn = (Button) findViewById(R.id.find_win_store_btn);
+        find_store_btn = (Button) findViewById(R.id.find_store_btn);
+        info_btn = (Button) findViewById(R.id.info_btn);
 
         // button font face
         qr_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         find_win_store_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         charge_video_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        find_store_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
+        info_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         today_num_btn.setText(R.string.today_num_btn);
         today_num_btn.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         // 버튼 비활성화
@@ -267,6 +272,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        info_btn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.nlotto.co.kr/game.do?method=buyInfo"));
+                startActivity(intent);
+            }
+        });
+
+        find_store_btn.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.nlotto.co.kr/game.do?method=sellerInfo645"));
+                startActivity(intent);
+            }
+        });
+
         today_num_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 disableButton(today_num_btn);
@@ -317,17 +338,15 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 try {
                     qrCodeNumberParser = new QrCodeNumberParser(result.getContents().toString());
+                    checkLottoNumberPopupWindow(qrCodeNumberParser.getQrCodeNumber(), qrCodeNumberParser.getDrwNo());
                 } catch (Exception e) {
                     Log.i(TAG, "Exceoption E : " + e.toString());
                     Toast.makeText(MainActivity.this, R.string.wrong_qr_code, Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                checkLottoNumberPopupWindow(qrCodeNumberParser.getQrCodeNumber(), qrCodeNumberParser.getDrwNo());
             }
         } else {
             Log.d("MainActivity", "Weird");
-// This is important, otherwise the result will not be passed to the fragment
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

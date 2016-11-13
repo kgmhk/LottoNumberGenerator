@@ -27,4 +27,6 @@
     <string name="app_explain5">감사합니다.</string>
     <string name="winner_sell_place" translatable="false">등 판매 장소</string>
     <string name="win_place" translatable="false">당첨 판매점</string>
+    <string name="store_place">판매점 조회</string>
+    <string name="info">구입 안내</string>
 </resources>
