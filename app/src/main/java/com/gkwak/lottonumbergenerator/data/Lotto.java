@@ -24,19 +24,19 @@ public class Lotto {
 
     public Lotto(JSONObject lotto) {
         try {
-            this.bnusNo = lotto.getInt("bnusNo");
-            this.firstWinamnt = lotto.getLong("firstWinamnt")+"";
-            this.totSellamnt = lotto.getInt("totSellamnt");
-            this.returnValue = Boolean.parseBoolean(lotto.getString("returnValue"));
-            this.drwtNo1 = lotto.getInt("drwtNo1");
-            this.drwtNo2 = lotto.getInt("drwtNo2");
-            this.drwtNo3 = lotto.getInt("drwtNo3");
-            this.drwtNo4 = lotto.getInt("drwtNo4");
-            this.drwtNo5 = lotto.getInt("drwtNo5");
-            this.drwtNo6 = lotto.getInt("drwtNo6");
-            this.drwNo = lotto.getInt("drwNo");
-            this.firstPrzwnerCo = lotto.getInt("firstPrzwnerCo");
-            this.drwNoDate = lotto.getString("drwNoDate");
+            this.bnusNo = lotto.isNull("bnusNo") ? 0 : lotto.getInt("bnusNo");
+            this.firstWinamnt = lotto.isNull("firstWinamnt") ? "0" : lotto.getLong("firstWinamnt")+"";
+            this.totSellamnt = lotto.isNull("totSellamnt") ? 0 : lotto.getInt("totSellamnt");
+            this.returnValue = lotto.isNull("returnValue") ? false : (lotto.getString("returnValue").equals("success"));
+            this.drwtNo1 = lotto.isNull("drwtNo1") ? 1 : lotto.getInt("drwtNo1");
+            this.drwtNo2 = lotto.isNull("drwtNo2") ? 1 : lotto.getInt("drwtNo2");
+            this.drwtNo3 = lotto.isNull("drwtNo3") ? 1 : lotto.getInt("drwtNo3");
+            this.drwtNo4 = lotto.isNull("drwtNo4") ? 1 : lotto.getInt("drwtNo4");
+            this.drwtNo5 = lotto.isNull("drwtNo5") ? 1 : lotto.getInt("drwtNo5");
+            this.drwtNo6 = lotto.isNull("drwtNo6") ? 1 : lotto.getInt("drwtNo6");
+            this.drwNo = lotto.isNull("drwNo") ? 0 : lotto.getInt("drwNo");
+            this.firstPrzwnerCo = lotto.isNull("firstPrzwnerCo") ? 0 : lotto.getInt("firstPrzwnerCo");
+            this.drwNoDate = lotto.isNull("drwNoDate") ? "0000-00-00" : lotto.getString("drwNoDate");
         } catch (JSONException e) {
             e.printStackTrace();
         }

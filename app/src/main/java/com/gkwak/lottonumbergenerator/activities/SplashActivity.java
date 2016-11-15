@@ -71,6 +71,7 @@ public class SplashActivity extends Activity {
             }
 
             Log.i(TAG, "firstWinamnt : " + lotto.getFirstWinamnt());
+            editor.putBoolean("returnValue", lotto.getReturnValue());
             editor.putString("winNumber", winNumberStr);
             editor.putInt("drwNo", lotto.getDrwNo());
             editor.putInt("firstPrzwnerCo", lotto.getFirstPrzwnerCo());

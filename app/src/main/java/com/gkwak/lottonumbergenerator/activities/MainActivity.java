@@ -54,6 +54,7 @@ import com.gkwak.lottonumbergenerator.libs.TodayLottoGenerator;
 import com.gkwak.lottonumbergenerator.libs.WebParser;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -149,11 +150,12 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences mPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
         String joinedWinNumbers = mPref.getString("winNumber", "no exist");
-        int drwNo = mPref.getInt("drwNo", 1);
+        int drwNo = mPref.getInt("drwNo", 0);
         int checkLottoNumberCount = mPref.getInt("checkLottoNumberCount", 0);
         int firstPrzwnerCo = mPref.getInt("firstPrzwnerCo", 0);
         String firstWinamnt = mPref.getString("firstWinamnt", "");
         String convertCurrency = String.format(Currency.getInstance(Locale.KOREA).getSymbol() + "%,d", Long.parseLong(firstWinamnt));
+        Boolean returnValue = mPref.getBoolean("returnValue", false);
 
         Log.i(TAG, "firstWinamnt : " + firstWinamnt);
 
@@ -173,10 +175,16 @@ public class MainActivity extends AppCompatActivity {
         coWinnerTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         winAmntTitle.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
 
-        coWinner.setText("" + firstPrzwnerCo + "명");
+        coWinner.setText("" + firstPrzwnerCo + getResources().getString(R.string.person));
         winAmnt.setText("" + convertCurrency);
 
-        winNumberDrw.setText(drwNo + " 회 당첨번호");
+        Log.i(TAG, "returnValue : " + returnValue);
+        if (returnValue) {
+            winNumberDrw.setText(drwNo + " " + getResources().getString(R.string.drw_desc));
+        } else {
+            Toast.makeText(MainActivity.this, R.string.no_lotto_info_warning_desc, Toast.LENGTH_LONG).show();
+            winNumberDrw.setText(getResources().getString(R.string.no_lotto_info_warning));
+        }
         winNumberDrw.setTypeface(Typekit.createFromAsset(this, "fonts/SangSangTitle.ttf"));
         for (int i=0; i<8; i++) {
             layoutParams.setMargins(6, 6, 6, 6);

@@ -29,4 +29,8 @@
     <string name="win_place" translatable="false">당첨 판매점</string>
     <string name="store_place">판매점 조회</string>
     <string name="info">구입 안내</string>
+    <string name="drw_desc" translatable="false">회 당첨번호</string>
+    <string name="person" translatable="false">명</string>
+    <string name="no_lotto_info_warning" translatable="false">정보를 얻어오지 못했습니다.</string>
+    <string name="no_lotto_info_warning_desc" translatable="false">정보를 얻어오지 못했습니다. 다시 실행해 주세요.</string>
 </resources>

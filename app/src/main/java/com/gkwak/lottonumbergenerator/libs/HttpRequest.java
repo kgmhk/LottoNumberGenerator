@@ -61,6 +61,13 @@ public class HttpRequest {
             try {
                 obj = new JSONObject(jsonString);
             } catch (JSONException e) {
+                String exceoptionJson = "{bnusNo:0,firstWinamnt:0,totSellamnt:0,returnValue:fail,drwtNo3:1,drwtNo2:1," +
+                        "drwtNo1:1,drwtNo6:1,drwtNo5:1,drwtNo4:1,drwNoDate:0000-00-00,drwNo:500,firstPrzwnerCo:0}";
+                try {
+                    obj = new JSONObject(exceoptionJson);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
                 e.printStackTrace();
             }
 
