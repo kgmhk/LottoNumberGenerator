@@ -89,7 +89,7 @@ import static android.R.attr.fingerprintAuthDrawable;
 import static android.R.attr.gravity;
 
 public class MainActivity extends AppCompatActivity {
-    private static int SPECIAL_RESULT_LENGTH = 1;
+    private static int SPECIAL_RESULT_LENGTH = 5;
     private static int RESULT_LENGTH = 5;
     private static int DRW_LENGTH = 5;
     private static String TAG = "MAIN_ACTIVITY";
@@ -647,7 +647,7 @@ public class MainActivity extends AppCompatActivity {
 
                     int[][] todayNumbers = todayLottoGenerator.todayLottoNumbers();
 
-                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_spcial_number, 100, 800);
+                    todayLottoNumberPopupWindow(todayNumbers, R.string.today_lotto_spcial_number, 100, 500);
                 }
                 catch ( Exception e )
                 {

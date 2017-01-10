@@ -103,6 +103,20 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/today_num_btn"
+            android:id="@+id/today_num_btn"
+            android:layout_weight="1"
+            tools:ignore="ButtonStyle"
+            android:background="@drawable/btn_selector"
+            android:textColor="@color/navy"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:textSize="20sp" />
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -177,25 +191,12 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/today_num_btn"
-            android:id="@+id/today_num_btn"
-            android:layout_weight="1"
-            tools:ignore="ButtonStyle"
-            android:background="@drawable/btn_selector"
-            android:textColor="@color/navy"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:textSize="20sp" />
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
 
             <Button
                 android:layout_width="match_parent"
