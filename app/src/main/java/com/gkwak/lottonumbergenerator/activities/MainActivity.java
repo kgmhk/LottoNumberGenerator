@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         info_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.nlotto.co.kr/game.do?method=buyInfo"));
+                        Uri.parse("http://www.nlotto.co.kr/gameInfo.do?method=buyInfo"));
                 startActivity(intent);
             }
         });
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         find_store_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.nlotto.co.kr/game.do?method=sellerInfo645"));
+                        Uri.parse("http://www.nlotto.co.kr/store.do?method=sellerInfo645"));
                 startActivity(intent);
             }
         });

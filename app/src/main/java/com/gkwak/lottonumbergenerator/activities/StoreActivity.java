@@ -47,7 +47,7 @@ public class StoreActivity extends AppCompatActivity {
 
         topLayout = (LinearLayout) findViewById(R.id.store_top_container);
 
-        String url = "http://www.nlotto.co.kr/lotto645Confirm.do?method=topStore&pageGubun=L645";
+        String url = "http://www.nlotto.co.kr/store.do?method=topStore&pageGubun=L645";
 
         try {
             webParser = new WebParser(url, topLayout);
@@ -64,8 +64,12 @@ public class StoreActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        int countNum = 1;
+        int countNum = 0;
         for (Element table: resultHtml) {
+            if (countNum == 0) {
+                countNum++;
+                continue;
+            }
             // title layout
             int leftMargin=0;
             int topMargin=0;
