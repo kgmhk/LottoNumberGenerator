@@ -124,6 +124,7 @@ public class StoreActivity extends AppCompatActivity {
                     Elements aTag = td.getElementsByTag("a");
                     if (!aTag.toString().isEmpty()) {
                         ImageButton btn = new ImageButton(this);
+                        Log.d(TAG, aTag.attr("onclick"));
                         String addr = aTag.attr("onclick").replaceAll("[^0-9]", "");
                         btn.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
                         btn.setImageResource(android.R.drawable.ic_dialog_map);
@@ -169,7 +170,7 @@ public class StoreActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nlotto.co.kr/lotto645Confirm.do?method=topStoreLocation&gbn=lotto&rtlrId=" + addr));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nlotto.co.kr/store.do?method=topStoreLocation&gbn=lotto&rtlrId=" + addr));
             startActivity(intent);
         }
 
