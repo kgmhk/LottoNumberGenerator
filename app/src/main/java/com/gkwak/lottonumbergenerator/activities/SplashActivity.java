@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,9 +19,13 @@ import com.gkwak.lottonumbergenerator.libs.GetLottoNumTask;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
+
+import static com.igaworks.core.RequestParameter.df;
 
 public class SplashActivity extends Activity {
 
@@ -29,6 +34,7 @@ public class SplashActivity extends Activity {
     private Lotto lotto;
     private SharedPreferences sharedPref;
 
+    public static final long HOUR = 3600*1000;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +44,38 @@ public class SplashActivity extends Activity {
         if (!isOnline()) {
             Toast.makeText(this, "Please Connect Internet", Toast.LENGTH_LONG).show();
         } else {
-            String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber";
+            String standard = "2018-09-22";
+            int standardDrwNo = 825;
+
+            Date d = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date standardDate;
+            Date currentDate;
+            try {
+                Log.i(TAG, "start date compare");
+                currentDate = d;
+                standardDate = sdf.parse(standard);
+
+                currentDate = new Date(currentDate.getTime() + 9 * HOUR);
+
+                Log.i(TAG, "currentDate : " + currentDate);
+                Log.i(TAG, "standardDate : " + standardDate);
+
+                long diff = currentDate.getTime() - standardDate.getTime();
+                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                Log.i(TAG,"standardDate : " + diffDays);
+                if (diffDays/7 > 0 && diffDays%7 != 0) {
+                    standardDrwNo += diffDays/7;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            Log.i(TAG,"standardDrwNo : " + standardDrwNo);
+
+            String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + standardDrwNo;
             mAuthTask = new GetLottoNumTask(url);
             JSONObject result = null;
             try {
@@ -48,6 +85,7 @@ public class SplashActivity extends Activity {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+
 
             lotto = new Lotto(result);
             String winNumberStr = lotto.getWinNumberStr();
@@ -59,8 +97,7 @@ public class SplashActivity extends Activity {
             sharedPref = getSharedPreferences("lotto", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
 
-            Date d = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 
             String checkDate = sharedPref.getString("checkDate", "");
 
