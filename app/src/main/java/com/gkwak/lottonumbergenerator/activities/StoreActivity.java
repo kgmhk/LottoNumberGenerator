@@ -47,7 +47,7 @@ public class StoreActivity extends AppCompatActivity {
 
         topLayout = (LinearLayout) findViewById(R.id.store_top_container);
 
-        String url = "http://www.nlotto.co.kr/store.do?method=topStore&pageGubun=L645";
+        String url = "https://www.dhlottery.co.kr/store.do?method=topStore&pageGubun=L645";
 
         try {
             webParser = new WebParser(url, topLayout);
@@ -170,7 +170,7 @@ public class StoreActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nlotto.co.kr/store.do?method=topStoreLocation&gbn=lotto&rtlrId=" + addr));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.dhlottery.co.kr/store.do?method=topStoreLocation&gbn=lotto&rtlrId=" + addr));
             startActivity(intent);
         }
 

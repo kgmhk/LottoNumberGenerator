@@ -74,8 +74,8 @@ public class SplashActivity extends Activity {
 
 
             Log.i(TAG,"standardDrwNo : " + standardDrwNo);
-
-            String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + standardDrwNo;
+            String url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=" + standardDrwNo;
+//            String url = "https://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + standardDrwNo;
             mAuthTask = new GetLottoNumTask(url);
             JSONObject result = null;
             try {

@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         info_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.nlotto.co.kr/gameInfo.do?method=buyInfo"));
+                        Uri.parse("https://www.dhlottery.co.kr/gameInfo.do?method=buyInfo"));
                 startActivity(intent);
             }
         });
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         find_store_btn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://www.nlotto.co.kr/store.do?method=sellerInfo645"));
+                        Uri.parse("https://www.dhlottery.co.kr/store.do?method=sellerInfo645"));
                 startActivity(intent);
             }
         });
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
             check_lotto_num_title = (TextView) layout.findViewById(R.id.check_lotto_num_title);
             check_num_popup_share_btn = (Button) layout.findViewById(R.id.check_num_popup_share_btn);
 
-            String url = "http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + drwNo;
+            String url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=" + drwNo;
             mAuthTask = new GetLottoNumTask(url);
             JSONObject result = null;
             try {
